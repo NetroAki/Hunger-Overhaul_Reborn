@@ -36,6 +36,7 @@ public final class HOReborn {
     public static final ToolModule TOOL_MODULE = new ToolModule();
     public static final HungerModule HUNGER_MODULE = new HungerModule();
     public static final HealthModule HEALTH_MODULE = new HealthModule();
+    public static final SereneSeasonsModule SERENE_SEASONS_MODULE = new SereneSeasonsModule();
     // public static final HarvestCraftModule HARVESTCRAFT_MODULE = new
     // HarvestCraftModule();
 
@@ -61,6 +62,7 @@ public final class HOReborn {
         TOOL_MODULE.init();
         HUNGER_MODULE.init();
         HEALTH_MODULE.init();
+        SERENE_SEASONS_MODULE.init();
 
         // Initialize optional mod integrations (commented out until dependencies are
         // available)

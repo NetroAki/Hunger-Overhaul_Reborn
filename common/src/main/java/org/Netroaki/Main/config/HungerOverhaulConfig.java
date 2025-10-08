@@ -45,6 +45,16 @@ public class HungerOverhaulConfig {
         public boolean cropsOnlyGiveSeeds = true;
         public boolean difficultyScalingBoneMeal = true;
         public boolean removeTallGrassSeeds = true;
+        public boolean disableCropGrowthModifications = false;
+        public boolean autoDetectGrowthMods = true;
+        
+        // Serene Seasons compatibility settings
+        public boolean enableSereneSeasonsCompatibility = true;
+        public boolean respectSeasonalGrowth = true;
+        public double winterGrowthMultiplier = 0.3;
+        public double springGrowthMultiplier = 1.0;
+        public double summerGrowthMultiplier = 1.2;
+        public double autumnGrowthMultiplier = 0.6;
     }
 
     public static class AnimalSettings {
