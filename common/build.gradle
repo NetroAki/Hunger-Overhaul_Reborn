@@ -22,4 +22,9 @@ dependencies {
     
     // Optional mod dependencies
     // modImplementation "com.pam.harvestcraft:harvestcraft:1.20.1-1.0.0"
+    
+    // Serene Seasons for compatibility testing (runtime only)
+    // Note: Add Serene Seasons JAR manually to run/mods/ for testing
+    // modRuntimeOnly "sereneseasons:sereneseasons-fabric:${rootProject.serene_seasons_version}"
+    // modRuntimeOnly "sereneseasons:sereneseasons-forge:${rootProject.serene_seasons_version}"
 }
