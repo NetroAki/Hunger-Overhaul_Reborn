@@ -1,0 +1,187 @@
+# Gradle
+.gradle/
+.gradle-ss-run/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Allow source code
+!**/src/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Minecraft Development
+run/
+logs/
+screenshots/
+saves/
+resourcepacks/
+shaderpacks/
+mods/
+/config/
+defaultconfigs/
+usercache.json
+usernamecache.json
+options.txt
+optionsof.txt
+optionsshaders.txt
+
+# Build outputs
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Log files
+*.log
+*.log.*
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE specific
+*.sublime-project
+*.sublime-workspace
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Development artifacts
+*.orig
+*.rej
+*.bak
+*.backup
+*.old
+
+# Cache directories
+.cache/
+cache/
+loom-cache/
+
+# Generated sources
+generated/
+.processed/
+
+# Test results
+test-results/
+test-output/
+
+# Coverage reports
+coverage/
+*.coverage
+
+# Package files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Local configuration files
+local.properties
+gradle.properties.local
+
+# Fabric specific
+fabric.mod.json.bak
+
+# Forge specific
+mods.toml.bak
+
+# Development tools
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# AI/Assistant related files - Cursor IDE
+.cursor/
+.aider*
+.copilot*
+.github/copilot/
+
+# AI conversation history
+*.aider.chat.history.md
+*.cursor.chat.history.md
+
+# Examples and reference code
+Example/
+Examples/
+examples/
+example/
+
+# Documentation files in root (personal notes, drafts, etc.)
+/*.md
+!README.md
+
+# Original mod source (exclude the master branch copy)
+HungerOverhaul-master/
+
+# Backup files
+*.backup
+*.bak
+*.old
+*.orig
+
+# Temporary directories
+tmp/
+temp/
