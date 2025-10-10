@@ -45,7 +45,7 @@ public final class HOReborn {
 
     public static void init() {
         LOGGER.info("Initializing Hunger Overhaul Reborn");
-        
+
         // Initialize compatibility layer for multi-version support
         CompatibilityLayer.initialize();
         LOGGER.info("Running on Minecraft {}", VersionDetector.getVersionString());
