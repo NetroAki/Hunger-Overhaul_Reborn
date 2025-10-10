@@ -172,6 +172,7 @@ example/
 # Documentation files in root (personal notes, drafts, etc.)
 /*.md
 !README.md
+!MULTI_VERSION_SETUP.md
 
 # Original mod source (exclude the master branch copy)
 HungerOverhaul-master/

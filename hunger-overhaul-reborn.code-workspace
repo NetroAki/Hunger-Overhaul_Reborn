@@ -1,0 +1,86 @@
+{
+  "folders": [
+    {
+      "name": "1.20.1 (stable)",
+      "path": "./1.20.1"
+    },
+    {
+      "name": "1.21.1 (dev)",
+      "path": "./1.21.1"
+    }
+  ],
+  "settings": {
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "gradle.nestedProjects": true,
+    "git.autoRepositoryDetection": "subFolders",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.debug.settings.onBuildFailureProceed": true,
+    "files.exclude": {
+      "**/.gradle": true,
+      "**/build": true,
+      "**/.gradle-ss-run": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "vscjava.vscode-gradle",
+      "redhat.java",
+      "eamodio.gitlens",
+      "ms-vscode.vscode-json",
+      "ms-vscode.vscode-yaml"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build 1.20.1",
+        "type": "shell",
+        "command": "./gradlew build",
+        "options": {
+          "cwd": "${workspaceFolder:1.20.1 (stable)}"
+        },
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        }
+      },
+      {
+        "label": "Build 1.21.1",
+        "type": "shell",
+        "command": "./gradlew build",
+        "options": {
+          "cwd": "${workspaceFolder:1.21.1 (dev)}"
+        },
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        }
+      },
+      {
+        "label": "Run 1.20.1 Fabric Client",
+        "type": "shell",
+        "command": "./gradlew :fabric:runClient",
+        "options": {
+          "cwd": "${workspaceFolder:1.20.1 (stable)}"
+        },
+        "group": "build"
+      },
+      {
+        "label": "Run 1.21.1 Fabric Client",
+        "type": "shell",
+        "command": "./gradlew :fabric:runClient",
+        "options": {
+          "cwd": "${workspaceFolder:1.21.1 (dev)}"
+        },
+        "group": "build"
+      }
+    ]
+  }
+}
