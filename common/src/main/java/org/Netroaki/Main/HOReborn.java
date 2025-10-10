@@ -14,6 +14,8 @@ import org.Netroaki.Main.handlers.FoodEventHandler;
 import org.Netroaki.Main.handlers.PlayerEventHandler;
 import org.Netroaki.Main.handlers.WorldEventHandler;
 import org.Netroaki.Main.modules.*;
+import org.Netroaki.Main.compat.CompatibilityLayer;
+import org.Netroaki.Main.util.VersionDetector;
 // import org.Netroaki.Main.util.DebugCommands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,6 +45,10 @@ public final class HOReborn {
 
     public static void init() {
         LOGGER.info("Initializing Hunger Overhaul Reborn");
+        
+        // Initialize compatibility layer for multi-version support
+        CompatibilityLayer.initialize();
+        LOGGER.info("Running on Minecraft {}", VersionDetector.getVersionString());
 
         // Register registries
         EFFECTS.register();

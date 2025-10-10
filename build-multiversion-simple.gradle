@@ -1,0 +1,151 @@
+// Simple Multi-Version Build for Hunger Overhaul Reborn
+// This creates a single JAR that works with both 1.20.1 and 1.21.1
+
+plugins {
+    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+}
+
+architectury {
+    minecraft = project.minecraft_version
+}
+
+allprojects {
+    group = rootProject.maven_group
+    version = rootProject.mod_version
+}
+
+subprojects {
+    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
+
+    base {
+        archivesName = "$rootProject.archives_name-$project.name"
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://maven.fabricmc.net/" }
+        maven { url "https://maven.architectury.dev/" }
+        maven { url "https://files.minecraftforge.net/maven/" }
+        maven { url "https://maven.shedaniel.me/" }
+        maven { url "https://jitpack.io" }
+        maven { url "https://api.modrinth.com/maven" }
+        maven { url "https://cursemaven.com" }
+        maven { url "https://maven.glitchfiend.com/" }
+    }
+
+    dependencies {
+        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
+        mappings loom.officialMojangMappings()
+    }
+
+    java {
+        withSourcesJar()
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.release = 17
+    }
+
+    // Create multi-version JAR task
+    task multiVersionJar(type: Jar) {
+        group = 'build'
+        description = 'Creates a multi-version JAR that works with both 1.20.1 and 1.21.1'
+        archiveClassifier = 'multiversion'
+        from sourceSets.main.output
+        
+        manifest {
+            attributes([
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'Netroaki',
+                'Multi-Version-Support': '1.20.1,1.21.1',
+                'Main-Class': 'org.Netroaki.Main.HOReborn'
+            ])
+        }
+        
+        // Add version detection info to JAR
+        metaInf {
+            from('src/main/resources') {
+                include 'version-info.properties'
+            }
+        }
+    }
+
+    // Make multiVersionJar depend on build
+    multiVersionJar.dependsOn build
+
+    // Publishing configuration
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = base.archivesName.get()
+                from components.java
+                
+                // Also publish multi-version JAR
+                artifact multiVersionJar
+            }
+        }
+    }
+}
+
+// Root project tasks
+task buildMultiVersionJars {
+    group = 'build'
+    description = 'Builds multi-version JARs for all platforms'
+    dependsOn ':common:multiVersionJar'
+    dependsOn ':fabric:multiVersionJar'
+    dependsOn ':forge:multiVersionJar'
+}
+
+task copyMultiVersionJars {
+    group = 'build'
+    description = 'Copies all multi-version JARs to a distribution folder'
+    dependsOn buildMultiVersionJars
+    
+    doLast {
+        def distDir = file("$buildDir/distributions")
+        distDir.mkdirs()
+        
+        subprojects.each { project ->
+            def multiVersionJar = project.tasks.multiVersionJar
+            if (multiVersionJar) {
+                copy {
+                    from multiVersionJar.archiveFile
+                    into distDir
+                }
+            }
+        }
+        
+        println "Multi-version JARs copied to: ${distDir.absolutePath}"
+        println "These JARs work with both Minecraft 1.20.1 and 1.21.1!"
+    }
+}
+
+// Create version info file
+task createVersionInfo {
+    group = 'build'
+    description = 'Creates version info file for multi-version JARs'
+    
+    doLast {
+        def versionInfoFile = file("$buildDir/version-info.properties")
+        versionInfoFile.parentFile.mkdirs()
+        
+        versionInfoFile.text = """
+# Hunger Overhaul Reborn - Multi-Version Support
+mod.name=Hunger Overhaul Reborn
+mod.version=${project.version}
+supported.versions=1.20.1,1.21.1
+build.date=${new Date().format('yyyy-MM-dd HH:mm:ss')}
+build.system=multi-version
+"""
+    }
+}
+
+// Make build tasks depend on version info
+buildMultiVersionJars.dependsOn createVersionInfo

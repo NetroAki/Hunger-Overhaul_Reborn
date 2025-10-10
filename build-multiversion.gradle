@@ -1,0 +1,184 @@
+// Multi-Version Build System for Hunger Overhaul Reborn
+// This build script creates a shared common library and version-specific wrapper mods
+
+plugins {
+    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'maven-publish'
+}
+
+architectury {
+    minecraft = project.minecraft_version
+}
+
+allprojects {
+    group = rootProject.maven_group
+    version = rootProject.mod_version
+}
+
+// Configure repositories for all projects
+allprojects {
+    repositories {
+        mavenCentral()
+        maven { url "https://maven.fabricmc.net/" }
+        maven { url "https://maven.architectury.dev/" }
+        maven { url "https://files.minecraftforge.net/maven/" }
+        maven { url "https://maven.shedaniel.me/" }
+        maven { url "https://jitpack.io" }
+        maven { url "https://api.modrinth.com/maven" }
+        maven { url "https://cursemaven.com" }
+        maven { url "https://maven.glitchfiend.com/" }
+    }
+}
+
+// Common library configuration
+project(':common') {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    
+    base {
+        archivesName = "${rootProject.archives_name}-common"
+    }
+    
+    java {
+        withSourcesJar()
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    
+    tasks.withType(JavaCompile).configureEach {
+        it.options.release = 17
+    }
+    
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = base.archivesName.get()
+                from components.java
+            }
+        }
+    }
+}
+
+// Version-specific subprojects
+['1.20.1', '1.21.1'].each { version ->
+    project(":${version}") {
+        apply plugin: 'dev.architectury.loom'
+        apply plugin: 'architectury-plugin'
+        apply plugin: 'maven-publish'
+        
+        base {
+            archivesName = "${rootProject.archives_name}-${version}"
+        }
+        
+        // Set version-specific Minecraft version
+        def versionProps = new Properties()
+        file("${version}/gradle.properties").withInputStream { versionProps.load(it) }
+        minecraft_version = versionProps.getProperty('minecraft_version', rootProject.minecraft_version)
+        
+        dependencies {
+            // Depend on common library
+            implementation project(':common')
+            
+            minecraft "net.minecraft:minecraft:${minecraft_version}"
+            mappings loom.officialMojangMappings()
+        }
+        
+        java {
+            withSourcesJar()
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
+        }
+        
+        tasks.withType(JavaCompile).configureEach {
+            it.options.release = 17
+        }
+        
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    artifactId = base.archivesName.get()
+                    from components.java
+                }
+            }
+        }
+    }
+}
+
+// Platform-specific subprojects (fabric/forge)
+['fabric', 'forge'].each { platform ->
+    ['1.20.1', '1.21.1'].each { version ->
+        project(":${version}:${platform}") {
+            apply plugin: 'dev.architectury.loom'
+            apply plugin: 'architectury-plugin'
+            apply plugin: 'maven-publish'
+            
+            base {
+                archivesName = "${rootProject.archives_name}-${version}-${platform}"
+            }
+            
+            dependencies {
+                // Depend on common library and version wrapper
+                implementation project(':common')
+                implementation project(":${version}")
+                
+                // Platform-specific dependencies will be added in individual build.gradle files
+            }
+            
+            java {
+                withSourcesJar()
+                sourceCompatibility = JavaVersion.VERSION_17
+                targetCompatibility = JavaVersion.VERSION_17
+            }
+            
+            tasks.withType(JavaCompile).configureEach {
+                it.options.release = 17
+            }
+            
+            publishing {
+                publications {
+                    mavenJava(MavenPublication) {
+                        artifactId = base.archivesName.get()
+                        from components.java
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Root project tasks
+task buildAll {
+    group = 'build'
+    description = 'Builds all versions and platforms'
+    dependsOn ':common:build'
+    dependsOn ':1.20.1:build'
+    dependsOn ':1.21.1:build'
+    dependsOn ':1.20.1:fabric:build'
+    dependsOn ':1.20.1:forge:build'
+    dependsOn ':1.21.1:fabric:build'
+    dependsOn ':1.21.1:forge:build'
+}
+
+task cleanAll {
+    group = 'build'
+    description = 'Cleans all projects'
+    dependsOn ':common:clean'
+    dependsOn ':1.20.1:clean'
+    dependsOn ':1.21.1:clean'
+    dependsOn ':1.20.1:fabric:clean'
+    dependsOn ':1.20.1:forge:clean'
+    dependsOn ':1.21.1:fabric:clean'
+    dependsOn ':1.21.1:forge:clean'
+}
+
+// Publishing configuration
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = rootProject.archives_name
+            from components.java
+        }
+    }
+}

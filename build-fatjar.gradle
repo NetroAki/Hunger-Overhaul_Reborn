@@ -1,0 +1,123 @@
+// Fat JAR Build System for Hunger Overhaul Reborn
+// Creates self-contained JARs for each version that include all dependencies
+
+plugins {
+    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+}
+
+architectury {
+    minecraft = project.minecraft_version
+}
+
+allprojects {
+    group = rootProject.maven_group
+    version = rootProject.mod_version
+}
+
+subprojects {
+    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
+
+    base {
+        archivesName = "$rootProject.archives_name-$project.name"
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://maven.fabricmc.net/" }
+        maven { url "https://maven.architectury.dev/" }
+        maven { url "https://files.minecraftforge.net/maven/" }
+        maven { url "https://maven.shedaniel.me/" }
+        maven { url "https://jitpack.io" }
+        maven { url "https://api.modrinth.com/maven" }
+        maven { url "https://cursemaven.com" }
+        maven { url "https://maven.glitchfiend.com/" }
+    }
+
+    dependencies {
+        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
+        mappings loom.officialMojangMappings()
+    }
+
+    java {
+        withSourcesJar()
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.release = 17
+    }
+
+    // Create fat JAR task
+    task fatJar(type: Jar) {
+        group = 'build'
+        description = 'Creates a fat JAR with all dependencies'
+        archiveClassifier = 'fat'
+        from sourceSets.main.output
+        from configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        
+        manifest {
+            attributes([
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'Netroaki',
+                'Main-Class': 'org.Netroaki.Main.HOReborn'
+            ])
+        }
+        
+        // Exclude duplicate files
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+
+    // Make fatJar depend on build
+    fatJar.dependsOn build
+
+    // Publishing configuration
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = base.archivesName.get()
+                from components.java
+                
+                // Also publish fat JAR
+                artifact fatJar
+            }
+        }
+    }
+}
+
+// Root project tasks
+task buildAllFatJars {
+    group = 'build'
+    description = 'Builds fat JARs for all versions and platforms'
+    dependsOn ':common:fatJar'
+    dependsOn ':fabric:fatJar'
+    dependsOn ':forge:fatJar'
+}
+
+task copyFatJars {
+    group = 'build'
+    description = 'Copies all fat JARs to a distribution folder'
+    dependsOn buildAllFatJars
+    
+    doLast {
+        def distDir = file("$buildDir/distributions")
+        distDir.mkdirs()
+        
+        subprojects.each { project ->
+            def fatJar = project.tasks.fatJar
+            if (fatJar) {
+                copy {
+                    from fatJar.archiveFile
+                    into distDir
+                }
+            }
+        }
+        
+        println "Fat JARs copied to: ${distDir.absolutePath}"
+    }
+}
