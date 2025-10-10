@@ -7,15 +7,19 @@ import org.Netroaki.Main.HOReborn;
  * This allows the mod to work with multiple Minecraft versions using a single JAR.
  */
 public class VersionDetector {
-    private static final String MINECRAFT_VERSION = detectMinecraftVersion();
-    private static final boolean IS_1_20_1 = MINECRAFT_VERSION.startsWith("1.20.1");
-    private static final boolean IS_1_21_1 = MINECRAFT_VERSION.startsWith("1.21.1");
+    private static String MINECRAFT_VERSION = null;
+    private static Boolean IS_1_20_1 = null;
+    private static Boolean IS_1_21_1 = null;
     
     /**
      * Detects the current Minecraft version at runtime.
      * @return The Minecraft version string (e.g., "1.20.1", "1.21.1")
      */
     private static String detectMinecraftVersion() {
+        if (MINECRAFT_VERSION != null) {
+            return MINECRAFT_VERSION;
+        }
+        
         try {
             // Try to get version from SharedConstants (most reliable)
             Class<?> sharedConstantsClass = Class.forName("net.minecraft.SharedConstants");
@@ -23,6 +27,7 @@ public class VersionDetector {
             versionField.setAccessible(true);
             String version = (String) versionField.get(null);
             HOReborn.LOGGER.info("[VersionDetector] Detected Minecraft version: {}", version);
+            MINECRAFT_VERSION = version;
             return version;
         } catch (Exception e1) {
             try {
@@ -32,11 +37,13 @@ public class VersionDetector {
                 versionField.setAccessible(true);
                 String version = (String) versionField.get(null);
                 HOReborn.LOGGER.info("[VersionDetector] Detected Minecraft version (fallback): {}", version);
+                MINECRAFT_VERSION = version;
                 return version;
             } catch (Exception e2) {
                 // Last resort: use system property or default
-                String version = System.getProperty("minecraft.version", "unknown");
-                HOReborn.LOGGER.warn("[VersionDetector] Could not detect Minecraft version, using: {}", version);
+                String version = System.getProperty("minecraft.version", "1.20.1");
+                HOReborn.LOGGER.warn("[VersionDetector] Could not detect Minecraft version, defaulting to: {}", version);
+                MINECRAFT_VERSION = version;
                 return version;
             }
         }
@@ -47,7 +54,7 @@ public class VersionDetector {
      * @return The Minecraft version string
      */
     public static String getMinecraftVersion() {
-        return MINECRAFT_VERSION;
+        return detectMinecraftVersion();
     }
     
     /**
@@ -56,7 +63,7 @@ public class VersionDetector {
      * @return true if the current version matches
      */
     public static boolean isVersion(String version) {
-        return MINECRAFT_VERSION.startsWith(version);
+        return detectMinecraftVersion().startsWith(version);
     }
     
     /**
@@ -64,6 +71,9 @@ public class VersionDetector {
      * @return true if running on 1.20.1
      */
     public static boolean is1_20_1() {
+        if (IS_1_20_1 == null) {
+            IS_1_20_1 = detectMinecraftVersion().startsWith("1.20.1");
+        }
         return IS_1_20_1;
     }
     
@@ -72,6 +82,9 @@ public class VersionDetector {
      * @return true if running on 1.21.1
      */
     public static boolean is1_21_1() {
+        if (IS_1_21_1 == null) {
+            IS_1_21_1 = detectMinecraftVersion().startsWith("1.21.1");
+        }
         return IS_1_21_1;
     }
     
@@ -80,7 +93,7 @@ public class VersionDetector {
      * @return true if the version is supported
      */
     public static boolean isSupportedVersion() {
-        return IS_1_20_1 || IS_1_21_1;
+        return is1_20_1() || is1_21_1();
     }
     
     /**
@@ -88,9 +101,9 @@ public class VersionDetector {
      * @return A formatted version string
      */
     public static String getVersionString() {
-        if (IS_1_20_1) return "1.20.1";
-        if (IS_1_21_1) return "1.21.1";
-        return MINECRAFT_VERSION;
+        if (is1_20_1()) return "1.20.1";
+        if (is1_21_1()) return "1.21.1";
+        return detectMinecraftVersion();
     }
     
     /**
@@ -100,7 +113,7 @@ public class VersionDetector {
     public static void requireSupportedVersion() {
         if (!isSupportedVersion()) {
             throw new UnsupportedOperationException(
-                "Unsupported Minecraft version: " + MINECRAFT_VERSION + 
+                "Unsupported Minecraft version: " + detectMinecraftVersion() + 
                 ". Supported versions: 1.20.1, 1.21.1"
             );
         }

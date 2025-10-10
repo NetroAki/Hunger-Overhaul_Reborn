@@ -17,14 +17,15 @@ public class CompatibilityLayer {
     public static void initialize() {
         HOReborn.LOGGER.info("[CompatibilityLayer] Initializing for Minecraft {}", VersionDetector.getVersionString());
         
-        // Ensure we're running on a supported version
-        VersionDetector.requireSupportedVersion();
-        
         // Initialize version-specific components
         if (VersionDetector.is1_20_1()) {
             initialize1_20_1();
         } else if (VersionDetector.is1_21_1()) {
             initialize1_21_1();
+        } else {
+            // Default to 1.20.1 behavior if version detection fails
+            HOReborn.LOGGER.warn("[CompatibilityLayer] Version detection failed, defaulting to 1.20.1 behavior");
+            initialize1_20_1();
         }
         
         HOReborn.LOGGER.info("[CompatibilityLayer] Initialization complete");
