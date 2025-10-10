@@ -54,8 +54,8 @@ public final class HORebornFabric implements ModInitializer {
         // Register commands
         registerCommands();
 
-        // Register villager trades (HarvestCraft) if enabled
-        registerVillagerTrades();
+        // Register villager trades (HarvestCraft) if enabled - DISABLED FOR NOW
+        // registerVillagerTrades();
     }
 
     private void registerFabricEvents() {
@@ -69,26 +69,6 @@ public final class HORebornFabric implements ModInitializer {
             }
         });
 
-        // Block break: tall grass suppression and crop seed-only drop
-        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
-            if (state.getBlock() instanceof TallGrassBlock) {
-                world.removeBlock(pos, false);
-                return false; // cancel vanilla drops
-            }
-            if (state.getBlock() instanceof CropBlock crop) {
-                if (world instanceof ServerLevel server) {
-                    ItemStack seed = crop.getCloneItemStack(server, pos, state);
-                    world.removeBlock(pos, false);
-                    if (!seed.isEmpty()) {
-                        net.minecraft.world.level.block.Block.popResource(server, pos,
-                                new ItemStack(seed.getItem(), 1));
-                    }
-                }
-                return false;
-            }
-            return true;
-        });
-
         // Apply hidden Mining Fatigue at Hungry level 3 to reduce mining speed
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
@@ -100,55 +80,6 @@ public final class HORebornFabric implements ModInitializer {
                     player.removeEffect(MobEffects.DIG_SLOWDOWN);
                 }
             }
-        });
-
-        // Register item use callback for eating speed modifications
-        UseItemCallback.EVENT.register((player, world, hand) -> {
-            var stack = player.getItemInHand(hand);
-            if (stack.isEdible() && HungerOverhaulConfig.getInstance().food.modifyEatingSpeed) {
-                // Modify eating duration based on food value
-                var food = stack.getItem().getFoodProperties();
-                if (food != null) {
-                    int duration = org.Netroaki.Main.util.FoodUtil.getEatingDuration(food.getNutrition());
-                    // This would require more complex implementation to modify eating speed
-                }
-            }
-            return net.minecraft.world.InteractionResultHolder.pass(stack);
-        });
-
-        // Register block use callback for crop harvest, hoe mechanics and bone meal
-        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            BlockPos pos = hitResult.getBlockPos();
-            var state = world.getBlockState(pos);
-            if (state.getBlock() instanceof CropBlock crop) {
-                if (!world.isClientSide()) {
-                    ServerLevel server = (ServerLevel) world;
-                    if (crop.isMaxAge(state)) {
-                        for (ItemStack drop : net.minecraft.world.level.block.Block.getDrops(state, server, pos, null,
-                                player, player.getItemInHand(hand))) {
-                            net.minecraft.world.level.block.Block.popResource(server, pos, drop);
-                        }
-                        server.setBlock(pos, crop.getStateForAge(0), 3);
-                        return net.minecraft.world.InteractionResult.SUCCESS;
-                    }
-                }
-            }
-
-            // Handle hoe usage
-            ToolModule toolModule = new ToolModule();
-            EventResult hoeRes = toolModule.onHoeUse(player, hand, hitResult.getBlockPos(), hitResult);
-            if (hoeRes != EventResult.pass()) {
-                return hoeRes.interruptsFurtherEvaluation() ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-            }
-
-            // Handle bone meal usage
-            CropModule cropModule = new CropModule();
-            EventResult boneRes = cropModule.onBoneMealUse(player, hand, hitResult.getBlockPos(), hitResult);
-            if (boneRes != EventResult.pass()) {
-                return boneRes.interruptsFurtherEvaluation() ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-            }
-
-            return net.minecraft.world.InteractionResult.PASS;
         });
 
         // Crop growth handled by mixins

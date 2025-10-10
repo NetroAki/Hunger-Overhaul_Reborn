@@ -20,9 +20,6 @@
   "entrypoints": {
     "main": [
       "org.Netroaki.Main.fabric.HORebornFabric"
-    ],
-    "client": [
-      "org.Netroaki.Main.fabric.client.HORebornFabricClient"
     ]
   },
 
