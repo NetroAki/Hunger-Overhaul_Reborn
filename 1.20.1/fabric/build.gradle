@@ -1,0 +1,79 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+configurations {
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+
+    // Files in this configuration will be bundled into your mod using the Shadow plugin.
+    // Don't use the `shadow` configuration from the plugin itself as it's meant for excluding files.
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+
+    modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
+
+    modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
+    
+    // Runtime Serene Seasons + GlitchCore via Modrinth (use version IDs for reliability)
+    // Serene Seasons 9.1.0.2 (Fabric 1.20.1) -> versionId c1BdjabH
+    modRuntimeOnly "maven.modrinth:serene-seasons:c1BdjabH"
+    // GlitchCore 0.0.1.1 (Fabric 1.20.1) -> versionId 25HLOiOl
+    modRuntimeOnly "maven.modrinth:glitchcore:25HLOiOl"
+    
+    // NightConfig dependency required by Serene Seasons (from Maven Central)
+    modRuntimeOnly "com.electronwill.night-config:core:3.6.6"
+    modRuntimeOnly "com.electronwill.night-config:toml:3.6.6"
+    
+    // TypeTools dependency required by GlitchCore
+    modRuntimeOnly "net.jodah:typetools:0.6.3"
+    
+    // Note: AutoConfig, AppleCore, and HarvestCraft dependencies are commented out
+    // as they require specific versions that may not be available
+    // These can be added back once the correct versions are identified
+    
+    // AutoConfig for configuration management
+    // modImplementation "me.shedaniel.autoconfig:AutoConfig:1.0.0-beta"
+    
+    // AppleCore dependency (required) - using a more appropriate version
+    // modImplementation "squeek.applecore:AppleCore:1.20.1-1.0.0"
+    
+    // Optional mod dependencies
+    // modImplementation "com.pam.harvestcraft:harvestcraft:1.20.1-1.0.0"
+
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('fabric.mod.json') {
+        expand version: project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+}
