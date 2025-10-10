@@ -169,6 +169,10 @@ Examples/
 examples/
 example/
 
+# Documentation files in root (personal notes, drafts, etc.)
+/*.md
+!README.md
+
 # Original mod source (exclude the master branch copy)
 HungerOverhaul-master/
 
