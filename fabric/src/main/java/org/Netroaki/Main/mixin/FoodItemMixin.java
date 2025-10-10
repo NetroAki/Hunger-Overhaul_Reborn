@@ -26,20 +26,21 @@ public class FoodItemMixin {
         }
 
         if (!(entity instanceof Player player)) {
-            HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Not a player, skipping");
+            // HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Not a player, skipping");
             return;
         }
         if (level.isClientSide) {
-            HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Client side, skipping");
+            // HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Client side, skipping");
             return;
         }
         if (player.getAbilities().instabuild) {
-            HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Creative mode, skipping");
+            // HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Creative mode, skipping");
             return;
         }
 
         int originalCount = stack.getCount();
-        HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin HEAD: Processing food item - count: {}", originalCount);
+        // HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin HEAD: Processing food item -
+        // count: {}", originalCount);
 
         // Only modify behavior if stack has more than 1 item
         if (originalCount > 1) {
@@ -47,15 +48,17 @@ public class FoodItemMixin {
             Item craftingRemainder = stack.getItem().getCraftingRemainingItem();
             boolean hasContainer = craftingRemainder != null;
 
-            HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Item has container: {}", hasContainer);
+            // HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Item has container: {}",
+            // hasContainer);
 
             // Cancel the original method call
             cir.cancel();
 
             // Shrink the original stack by 1
             stack.shrink(1);
-            HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Stack had {} items, shrinking to {} items",
-                    originalCount, stack.getCount());
+            // HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Stack had {} items,
+            // shrinking to {} items",
+            // originalCount, stack.getCount());
 
             // Apply the food effects manually
             if (stack.getItem().getFoodProperties() != null) {
@@ -68,7 +71,8 @@ public class FoodItemMixin {
                 if (!player.getInventory().add(containerStack)) {
                     player.drop(containerStack, false);
                 }
-                HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Added container item to inventory");
+                // HOReborn.LOGGER.info("[HOR Debug] FoodItemMixin: Added container item to
+                // inventory");
             }
 
             // Return the modified stack

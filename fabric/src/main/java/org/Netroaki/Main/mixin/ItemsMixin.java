@@ -25,7 +25,8 @@ public class ItemsMixin {
     @Redirect(method = "<clinit>", at = @At(value = "NEW", target = "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/BowlFoodItem;"))
     private static BowlFoodItem modifyBowlFoodStackSize(Item.Properties properties) {
         int stackSize = HORMixinPlugin.CONFIG.getBowlStackSize();
-        HOReborn.LOGGER.info("[HOR Debug] Modifying BowlFoodItem stack size to: {}", stackSize);
+        // HOReborn.LOGGER.info("[HOR Debug] Modifying BowlFoodItem stack size to: {}",
+        // stackSize);
         return new BowlFoodItem(properties.stacksTo(stackSize));
     }
 
@@ -35,7 +36,8 @@ public class ItemsMixin {
     @Redirect(method = "<clinit>", at = @At(value = "NEW", target = "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/SuspiciousStewItem;"))
     private static SuspiciousStewItem modifySuspiciousStewStackSize(Item.Properties properties) {
         int stackSize = HORMixinPlugin.CONFIG.getBowlStackSize();
-        HOReborn.LOGGER.info("[HOR Debug] Modifying SuspiciousStewItem stack size to: {}", stackSize);
+        // HOReborn.LOGGER.info("[HOR Debug] Modifying SuspiciousStewItem stack size to:
+        // {}", stackSize);
         return new SuspiciousStewItem(properties.stacksTo(stackSize));
     }
 
@@ -45,7 +47,8 @@ public class ItemsMixin {
     @Redirect(method = "<clinit>", at = @At(value = "NEW", target = "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/HoneyBottleItem;"))
     private static HoneyBottleItem modifyHoneyBottleStackSize(Item.Properties properties) {
         int stackSize = HORMixinPlugin.CONFIG.getBottleStackSize();
-        HOReborn.LOGGER.info("[HOR Debug] Modifying HoneyBottleItem stack size to: {}", stackSize);
+        // HOReborn.LOGGER.info("[HOR Debug] Modifying HoneyBottleItem stack size to:
+        // {}", stackSize);
         return new HoneyBottleItem(properties.stacksTo(stackSize));
     }
 
@@ -55,7 +58,8 @@ public class ItemsMixin {
     @Redirect(method = "<clinit>", at = @At(value = "NEW", target = "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/MilkBucketItem;"))
     private static MilkBucketItem modifyMilkBucketStackSize(Item.Properties properties) {
         int stackSize = HORMixinPlugin.CONFIG.getBucketStackSize();
-        HOReborn.LOGGER.info("[HOR Debug] Modifying MilkBucketItem stack size to: {}", stackSize);
+        // HOReborn.LOGGER.info("[HOR Debug] Modifying MilkBucketItem stack size to:
+        // {}", stackSize);
         return new MilkBucketItem(properties.stacksTo(stackSize));
     }
 }

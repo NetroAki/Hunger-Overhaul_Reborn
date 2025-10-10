@@ -18,7 +18,7 @@ public class HORMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        System.out.println("[HOR MixinPlugin] Loading Forge mixin plugin");
+        // System.out.println("[HOR MixinPlugin] Loading Forge mixin plugin");
 
         // Get game directory
         String gameDir = System.getProperty("user.dir");
@@ -33,9 +33,11 @@ public class HORMixinPlugin implements IMixinConfigPlugin {
         CONFIG = HORConfig.getInstance();
         CONFIG.load(gameDir);
 
-        System.out.println("[HOR MixinPlugin] Container food stack sizes - bowl:" + CONFIG.getBowlStackSize() +
-                " bottle:" + CONFIG.getBottleStackSize() + " bucket:" + CONFIG.getBucketStackSize() +
-                " default:" + CONFIG.getDefaultContainerStackSize());
+        // System.out.println("[HOR MixinPlugin] Container food stack sizes - bowl:" +
+        // CONFIG.getBowlStackSize() +
+        // " bottle:" + CONFIG.getBottleStackSize() + " bucket:" +
+        // CONFIG.getBucketStackSize() +
+        // " default:" + CONFIG.getDefaultContainerStackSize());
     }
 
     @Override

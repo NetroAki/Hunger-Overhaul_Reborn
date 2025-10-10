@@ -30,7 +30,8 @@ public class BowlFoodItemMixin {
         }
 
         int count = stack.getCount();
-        HOReborn.LOGGER.info("[HOR Debug] BowlFoodItemMixin: Eating bowl food with count: {}", count);
+        // HOReborn.LOGGER.info("[HOR Debug] BowlFoodItemMixin: Eating bowl food with
+        // count: {}", count);
 
         // Only modify if stack has more than 1
         if (count > 1) {
@@ -45,14 +46,16 @@ public class BowlFoodItemMixin {
 
             // Shrink by 1
             stack.shrink(1);
-            HOReborn.LOGGER.info("[HOR Debug] BowlFoodItemMixin: Shrunk stack from {} to {}", count, stack.getCount());
+            // HOReborn.LOGGER.info("[HOR Debug] BowlFoodItemMixin: Shrunk stack from {} to
+            // {}", count, stack.getCount());
 
             // Give back a bowl
             ItemStack bowl = new ItemStack(Items.BOWL);
             if (!player.getInventory().add(bowl)) {
                 player.drop(bowl, false);
             }
-            HOReborn.LOGGER.info("[HOR Debug] BowlFoodItemMixin: Added bowl to inventory");
+            // HOReborn.LOGGER.info("[HOR Debug] BowlFoodItemMixin: Added bowl to
+            // inventory");
 
             // Return the original stack (now with count-1)
             cir.setReturnValue(stack);

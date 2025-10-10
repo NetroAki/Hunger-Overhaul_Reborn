@@ -234,16 +234,16 @@ public class SereneSeasonsAPI {
             adjusted = 1.0;
 
         // Update debug context for periodic logs
-        try {
-            String difficulty = level.getDifficulty().name();
-            DebugMetrics.updateContext(
-                    getSeasonName(level) + " (" + difficulty + ")",
-                    getSeasonStrength(level),
-                    baseMultiplier,
-                    adjusted);
-        } catch (Throwable t) {
-            // ignore
-        }
+        // try {
+        // String difficulty = level.getDifficulty().name();
+        // DebugMetrics.updateContext(
+        // getSeasonName(level) + " (" + difficulty + ")",
+        // getSeasonStrength(level),
+        // baseMultiplier,
+        // adjusted);
+        // } catch (Throwable t) {
+        // // ignore
+        // }
         return adjusted;
     }
 

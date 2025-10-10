@@ -64,9 +64,10 @@ public class HORConfig {
                     defaultContainerStackSize = Integer.parseInt(
                             props.getProperty("containerFood.default.stackSize",
                                     String.valueOf(DEFAULT_CONTAINER_STACK_SIZE)));
-                    System.out.println("[HOR Config] Loaded configuration: bowl=" + bowlStackSize +
-                            ", bottle=" + bottleStackSize + ", bucket=" + bucketStackSize +
-                            ", default=" + defaultContainerStackSize);
+                    // System.out.println("[HOR Config] Loaded configuration: bowl=" + bowlStackSize
+                    // +
+                    // ", bottle=" + bottleStackSize + ", bucket=" + bucketStackSize +
+                    // ", default=" + defaultContainerStackSize);
                 }
             } else {
                 // Create default config
@@ -90,7 +91,8 @@ public class HORConfig {
                 bottleStackSize = DEFAULT_BOTTLE_STACK_SIZE;
                 bucketStackSize = DEFAULT_BUCKET_STACK_SIZE;
                 defaultContainerStackSize = DEFAULT_CONTAINER_STACK_SIZE;
-                System.out.println("[HOR Config] Created default configuration file at " + configPath);
+                // System.out.println("[HOR Config] Created default configuration file at " +
+                // configPath);
             }
 
             // Clamp values to valid range
@@ -100,15 +102,17 @@ public class HORConfig {
             defaultContainerStackSize = Math.max(1, Math.min(64, defaultContainerStackSize));
 
         } catch (IOException e) {
-            System.err.println("[HOR Config] Failed to load configuration, using defaults");
-            e.printStackTrace();
+            // System.err.println("[HOR Config] Failed to load configuration, using
+            // defaults");
+            // e.printStackTrace();
             bowlStackSize = DEFAULT_BOWL_STACK_SIZE;
             bottleStackSize = DEFAULT_BOTTLE_STACK_SIZE;
             bucketStackSize = DEFAULT_BUCKET_STACK_SIZE;
             defaultContainerStackSize = DEFAULT_CONTAINER_STACK_SIZE;
         } catch (NumberFormatException e) {
-            System.err.println("[HOR Config] Invalid number format in config, using default");
-            e.printStackTrace();
+            // System.err.println("[HOR Config] Invalid number format in config, using
+            // default");
+            // e.printStackTrace();
             bowlStackSize = DEFAULT_BOWL_STACK_SIZE;
             bottleStackSize = DEFAULT_BOTTLE_STACK_SIZE;
             bucketStackSize = DEFAULT_BUCKET_STACK_SIZE;

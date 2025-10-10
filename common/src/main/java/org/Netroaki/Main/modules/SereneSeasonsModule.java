@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.Netroaki.Main.HOReborn;
 import org.Netroaki.Main.config.HungerOverhaulConfig;
 import org.Netroaki.Main.util.SereneSeasonsAPI;
-import org.Netroaki.Main.util.DebugMetrics;
+// import org.Netroaki.Main.util.DebugMetrics;
 
 public class SereneSeasonsModule {
 
@@ -41,7 +41,7 @@ public class SereneSeasonsModule {
             return EventResult.pass();
         }
 
-        DebugMetrics.recordAttempt();
+        // DebugMetrics.recordAttempt();
 
         // Get current season info from Serene Seasons API
         SereneSeasonsAPI.SeasonInfo seasonInfo = SereneSeasonsAPI.getCurrentSeason(level);
@@ -82,7 +82,7 @@ public class SereneSeasonsModule {
         if (config.crops.cropsOnlyGrowInDaylight) {
             int sky = level.getBrightness(LightLayer.SKY, pos);
             if (!level.isDay() || sky < 9) {
-                DebugMetrics.recordDaylightBlocked();
+                // DebugMetrics.recordDaylightBlocked();
                 return EventResult.interrupt(false);
             }
         }
@@ -96,12 +96,12 @@ public class SereneSeasonsModule {
             multiplier = SereneSeasonsAPI.calculateGrowthMultiplier(level, multiplier);
 
             if (random.nextDouble() > multiplier) {
-                DebugMetrics.recordRandomRejected();
+                // DebugMetrics.recordRandomRejected();
                 return EventResult.interrupt(false);
             }
         }
 
-        DebugMetrics.recordAllowed();
+        // DebugMetrics.recordAllowed();
         return EventResult.pass();
     }
 

@@ -7,7 +7,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.Netroaki.Main.config.HungerOverhaulConfig;
-import org.Netroaki.Main.util.DebugMetrics;
+// import org.Netroaki.Main.util.DebugMetrics;
 import org.Netroaki.Main.util.SereneSeasonsAPI;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,23 +21,25 @@ public class AgeableBlockMixin {
     private void hor_onRandomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random,
             CallbackInfo ci) {
         // Track attempt
-        DebugMetrics.recordAttempt();
+        // DebugMetrics.recordAttempt();
 
         // Update debug context early so HUD/logs show actual season
-        try {
-            double base = HungerOverhaulConfig.getInstance().crops.cropGrowthMultiplier;
-            // preview adjusted just for context; do not short-circuit here
-            double adjustedPreview = SereneSeasonsAPI.calculateGrowthMultiplier(level, base);
-            DebugMetrics.updateContext(SereneSeasonsAPI.getSeasonName(level), SereneSeasonsAPI.getSeasonStrength(level),
-                    base, adjustedPreview);
-        } catch (Throwable ignored) {
-        }
+        // try {
+        // double base = HungerOverhaulConfig.getInstance().crops.cropGrowthMultiplier;
+        // // preview adjusted just for context; do not short-circuit here
+        // double adjustedPreview = SereneSeasonsAPI.calculateGrowthMultiplier(level,
+        // base);
+        // DebugMetrics.updateContext(SereneSeasonsAPI.getSeasonName(level),
+        // SereneSeasonsAPI.getSeasonStrength(level),
+        // base, adjustedPreview);
+        // } catch (Throwable ignored) {
+        // }
 
         // Daylight-only gate
         if (HungerOverhaulConfig.getInstance().crops.cropsOnlyGrowInDaylight) {
             int sky = level.getBrightness(LightLayer.SKY, pos);
             if (!level.isDay() || sky < 9) {
-                DebugMetrics.recordDaylightBlocked();
+                // DebugMetrics.recordDaylightBlocked();
                 ci.cancel();
                 return;
             }
@@ -45,7 +47,8 @@ public class AgeableBlockMixin {
 
         // Serene Seasons fertility gate - check if crop can grow in current season
         if (!SereneSeasonsAPI.shouldCropsGrow(level, pos, state)) {
-            DebugMetrics.recordRandomRejected(); // Use random rejected for fertility blocking
+            // DebugMetrics.recordRandomRejected(); // Use random rejected for fertility
+            // blocking
             ci.cancel();
             return;
         }
@@ -55,12 +58,12 @@ public class AgeableBlockMixin {
         double adjusted = SereneSeasonsAPI.calculateGrowthMultiplier(level, base);
 
         if (random.nextDouble() > adjusted) {
-            DebugMetrics.recordRandomRejected();
+            // DebugMetrics.recordRandomRejected();
             ci.cancel();
             return;
         }
 
         // Allowed
-        DebugMetrics.recordAllowed();
+        // DebugMetrics.recordAllowed();
     }
 }
