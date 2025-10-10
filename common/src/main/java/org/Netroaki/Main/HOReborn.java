@@ -14,6 +14,7 @@ import org.Netroaki.Main.handlers.FoodEventHandler;
 import org.Netroaki.Main.handlers.PlayerEventHandler;
 import org.Netroaki.Main.handlers.WorldEventHandler;
 import org.Netroaki.Main.modules.*;
+import org.Netroaki.Main.util.DebugCommands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -62,6 +63,8 @@ public final class HOReborn {
         TOOL_MODULE.init();
         HUNGER_MODULE.init();
         HEALTH_MODULE.init();
+        // Register debug commands
+        DebugCommands.register();
         SERENE_SEASONS_MODULE.init();
 
         // Initialize optional mod integrations (commented out until dependencies are

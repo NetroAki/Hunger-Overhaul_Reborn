@@ -1,5 +1,6 @@
 # Gradle
 .gradle/
+.gradle-ss-run/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -55,7 +56,7 @@ saves/
 resourcepacks/
 shaderpacks/
 mods/
-config/
+/config/
 defaultconfigs/
 usercache.json
 usernamecache.json
@@ -146,20 +147,27 @@ fabric.mod.json.bak
 mods.toml.bak
 
 # Development tools
-.cursor/
 .vscode/
 .idea/
 *.iml
 *.ipr
 *.iws
 
-# AI/Assistant related files (just in case)
-*ai*
-*assistant*
-*cursor*
-*claude*
-*gpt*
-*chatgpt*
+# AI/Assistant related files - Cursor IDE
+.cursor/
+.aider*
+.copilot*
+.github/copilot/
+
+# AI conversation history
+*.aider.chat.history.md
+*.cursor.chat.history.md
+
+# Examples and reference code
+Example/
+Examples/
+examples/
+example/
 
 # Original mod source (exclude the master branch copy)
 HungerOverhaul-master/

@@ -151,13 +151,7 @@ public final class HORebornFabric implements ModInitializer {
             return net.minecraft.world.InteractionResult.PASS;
         });
 
-        // Register server tick for crop growth modifications
-        ServerTickEvents.END_WORLD_TICK.register(world -> {
-            // This is a simplified approach - in a full implementation you'd use random
-            // tick events
-            // For now, we'll let vanilla handle crop growth and just apply our
-            // modifications
-        });
+        // Crop growth handled by mixins
     }
 
     private void registerVillagerTrades() {

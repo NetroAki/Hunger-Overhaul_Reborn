@@ -31,6 +31,19 @@ dependencies {
 
     modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
     
+    // Runtime Serene Seasons + GlitchCore via Modrinth (use version IDs for reliability)
+    // Serene Seasons 9.1.0.2 (Fabric 1.20.1) -> versionId c1BdjabH
+    modRuntimeOnly "maven.modrinth:serene-seasons:c1BdjabH"
+    // GlitchCore 0.0.1.1 (Fabric 1.20.1) -> versionId 25HLOiOl
+    modRuntimeOnly "maven.modrinth:glitchcore:25HLOiOl"
+    
+    // NightConfig dependency required by Serene Seasons (from Maven Central)
+    modRuntimeOnly "com.electronwill.night-config:core:3.6.6"
+    modRuntimeOnly "com.electronwill.night-config:toml:3.6.6"
+    
+    // TypeTools dependency required by GlitchCore
+    modRuntimeOnly "net.jodah:typetools:0.6.3"
+    
     // Note: AutoConfig, AppleCore, and HarvestCraft dependencies are commented out
     // as they require specific versions that may not be available
     // These can be added back once the correct versions are identified
