@@ -6,6 +6,7 @@ import org.Netroaki.Main.HOReborn;
 /**
  * Compatibility layer for handling differences between Minecraft versions.
  * This class provides version-specific implementations for various game mechanics.
+ * Loader differences are handled by Architectury at build time.
  */
 public class CompatibilityLayer {
     
