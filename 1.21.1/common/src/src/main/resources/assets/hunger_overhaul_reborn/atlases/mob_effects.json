@@ -1,0 +1,11 @@
+{
+  "sources": [
+    {
+      "type": "directory",
+      "source": "textures/mob_effect",
+      "prefix": "mob_effect/"
+    }
+  ]
+}
+
+

@@ -1,0 +1,24 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        { "type": "forge:false" }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "#X",
+          " |",
+          " |"
+        ],
+        "key": {
+          "#": { "item": "minecraft:planks" },
+          "X": { "item": "minecraft:planks" },
+          "|": { "item": "minecraft:stick" }
+        },
+        "result": { "item": "minecraft:wooden_hoe" }
+      }
+    }
+  ]
+}

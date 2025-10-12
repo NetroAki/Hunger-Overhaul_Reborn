@@ -2,10 +2,11 @@ plugins {
     id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'dev.kikugie.stonecutter' version '0.7.10'
 }
 
 architectury {
-    minecraft = project.minecraft_version
+    minecraft = project.hasProperty('minecraft_version') ? project.minecraft_version : "1.20.1"
 }
 
 allprojects {
@@ -21,6 +22,31 @@ subprojects {
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
         archivesName = "$rootProject.archives_name-$project.name"
+    }
+    
+    // Configure common subproject
+    if (project.name == 'common') {
+        loom {
+            accessWidenerPath = file("src/main/resources/hunger_overhaul_reborn.accesswidener")
+        }
+        
+        architectury {
+            common rootProject.enabled_platforms.split(',')
+        }
+        
+        dependencies {
+            // We depend on Fabric Loader here to use the Fabric @Environment annotations,
+            // which get remapped to the correct annotations on each platform.
+            // Do NOT use other classes from Fabric Loader.
+            modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+
+            modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+        }
+    }
+    
+    // Apply shadow plugin to fabric and forge subprojects
+    if (project.name == 'fabric' || project.name == 'forge') {
+        apply plugin: 'com.github.johnrengelman.shadow'
     }
 
     repositories {

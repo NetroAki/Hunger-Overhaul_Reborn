@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "hunger_overhaul_reborn",
+  "version": "${version}",
+  "name": "Hunger Overhaul Reborn",
+  "description": "A comprehensive hunger and food mechanics overhaul mod that makes hunger more challenging and realistic.",
+  "authors": [
+    "Netroaki"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Netroaki/Hunger-Overhaul-Reborn",
+    "sources": "https://github.com/Netroaki/Hunger-Overhaul-Reborn"
+  },
+  "license": "MIT",
+  "icon": "assets/hunger_overhaul_reborn/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "org.Netroaki.Main.fabric.HORebornFabric"
+    ],
+    "client": [
+      "org.Netroaki.Main.fabric.HORebornFabricClient"
+    ]
+  },
+  "mixins": [
+    "hunger_overhaul_reborn.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.17.2",
+    "minecraft": "~1.21.1",
+    "java": ">=17",
+    "architectury": ">=9.2.14",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "harvestcraft": "*",
+    "serene_seasons": "*"
+  }
+}

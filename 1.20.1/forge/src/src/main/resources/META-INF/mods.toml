@@ -1,0 +1,69 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "hunger_overhaul_reborn"
+version = "${version}"
+displayName = "Hunger Overhaul Reborn"
+authors = "Netroaki"
+description = '''
+A comprehensive hunger and food mechanics overhaul mod that makes hunger more challenging and realistic. 
+Features include rebalanced food values, crop modifications, animal changes, and integration with popular food mods like HarvestCraft.
+
+Key Features:
+- Rebalanced food replenishment values
+- Tooltips on food showing nutritional value
+- New GUI warnings for low health/hunger
+- Well Fed effect that boosts health regeneration
+- Maximum stack size depends on food value
+- Eating speed depends on food value
+- Animal output modifications (eggs, breeding, growth)
+- Crops only grow during daytime
+- Crops take longer to grow
+- Crops only give seeds (no extras)
+- Modified hoe mechanics
+- Constant hunger loss
+- Difficulty-based respawn hunger
+- Health healing above 3 shanks
+- Low health/hunger negative effects
+- Instant death on zero hunger
+- Integration with HarvestCraft
+'''
+#logoFile = ""
+
+[[dependencies.hunger_overhaul_reborn]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hunger_overhaul_reborn]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.21)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hunger_overhaul_reborn]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9.2.14,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.hunger_overhaul_reborn]]
+modId = "applecore"
+mandatory = false
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.hunger_overhaul_reborn]]
+modId = "harvestcraft"
+mandatory = false
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"
