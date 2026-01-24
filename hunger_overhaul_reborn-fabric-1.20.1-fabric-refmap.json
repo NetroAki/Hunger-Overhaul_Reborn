@@ -1,0 +1,58 @@
+{
+  "mappings": {
+    "org/Netroaki/Main/mixin/AgeableBlockMixin": {
+      "randomTick": "Lnet/minecraft/class_2302;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    },
+    "org/Netroaki/Main/mixin/BowlFoodItemMixin": {
+      "finishUsingItem": "Lnet/minecraft/class_1756;method_7861(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+    },
+    "org/Netroaki/Main/mixin/FoodItemMixin": {
+      "finishUsingItem": "Lnet/minecraft/class_1792;method_7861(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+    },
+    "org/Netroaki/Main/mixin/HoneyBottleItemMixin": {
+      "finishUsingItem": "Lnet/minecraft/class_4480;method_7861(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+    },
+    "org/Netroaki/Main/mixin/ItemsMixin": {
+      "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/BowlFoodItem;": "(Lnet/minecraft/class_1792$class_1793;)Lnet/minecraft/class_1756;",
+      "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/HoneyBottleItem;": "(Lnet/minecraft/class_1792$class_1793;)Lnet/minecraft/class_4480;",
+      "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/MilkBucketItem;": "(Lnet/minecraft/class_1792$class_1793;)Lnet/minecraft/class_1805;",
+      "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/SuspiciousStewItem;": "(Lnet/minecraft/class_1792$class_1793;)Lnet/minecraft/class_1830;",
+      "<clinit>": "Lnet/minecraft/class_1802;<clinit>()V"
+    },
+    "org/Netroaki/Main/mixin/MilkBucketItemMixin": {
+      "finishUsingItem": "Lnet/minecraft/class_1805;method_7861(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+    },
+    "org/Netroaki/Main/mixin/SuspiciousStewItemMixin": {
+      "finishUsingItem": "Lnet/minecraft/class_1830;method_7861(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "org/Netroaki/Main/mixin/AgeableBlockMixin": {
+        "randomTick": "Lnet/minecraft/class_2302;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      },
+      "org/Netroaki/Main/mixin/BowlFoodItemMixin": {
+        "finishUsingItem": "Lnet/minecraft/class_1756;method_7861(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+      },
+      "org/Netroaki/Main/mixin/FoodItemMixin": {
+        "finishUsingItem": "Lnet/minecraft/class_1792;method_7861(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+      },
+      "org/Netroaki/Main/mixin/HoneyBottleItemMixin": {
+        "finishUsingItem": "Lnet/minecraft/class_4480;method_7861(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+      },
+      "org/Netroaki/Main/mixin/ItemsMixin": {
+        "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/BowlFoodItem;": "(Lnet/minecraft/class_1792$class_1793;)Lnet/minecraft/class_1756;",
+        "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/HoneyBottleItem;": "(Lnet/minecraft/class_1792$class_1793;)Lnet/minecraft/class_4480;",
+        "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/MilkBucketItem;": "(Lnet/minecraft/class_1792$class_1793;)Lnet/minecraft/class_1805;",
+        "(Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/SuspiciousStewItem;": "(Lnet/minecraft/class_1792$class_1793;)Lnet/minecraft/class_1830;",
+        "<clinit>": "Lnet/minecraft/class_1802;<clinit>()V"
+      },
+      "org/Netroaki/Main/mixin/MilkBucketItemMixin": {
+        "finishUsingItem": "Lnet/minecraft/class_1805;method_7861(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+      },
+      "org/Netroaki/Main/mixin/SuspiciousStewItemMixin": {
+        "finishUsingItem": "Lnet/minecraft/class_1830;method_7861(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+      }
+    }
+  }
+}

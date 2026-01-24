@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "package": "org.Netroaki.Main.mixin.fabric",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8.5",
+  "plugin": "org.Netroaki.Main.mixin.fabric.HORMixinPlugin",
+  "mixins": [
+    "BowlFoodItemMixin",
+    "EatingDurationMixin",
+    "FoodItemMixin",
+    "HoneyBottleItemMixin",
+    "ItemsMixin",
+    "MilkBucketItemMixin",
+    "SuspiciousStewItemMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

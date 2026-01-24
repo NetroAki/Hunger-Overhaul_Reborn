@@ -1,0 +1,146 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+minecraft {
+	version = minecraft_version + "-" + forge_version
+	mappings = mappings_version
+	runDir = "run"
+
+	coreMod = "squeek.applecore.AppleCore"
+
+	replace "\${version}", project.version
+	replace "\${apiversion}", api_version
+	replaceIn "ModInfo.java"
+	replaceIn "package-info.java"
+}
+
+group = project.projectDir.name.toLowerCase()
+def modId = project.projectDir.name
+archivesBaseName = modId + "-mc" + project.minecraft.version
+
+if (version == "unspecified")
+	version = ""
+if (System.getenv("TRAVIS_BUILD_NUMBER") != null)
+	version += (version ? "+" : "") + "${System.getenv("TRAVIS_BUILD_NUMBER").toInteger() + 230}"
+if (System.getenv("TRAVIS_COMMIT") != null)
+	version += (version ? "." : "") + "${System.getenv("TRAVIS_COMMIT").take(5)}"
+
+sourceSets.main{
+	java {
+		srcDirs 'java', 'apis'
+	}
+	resources {
+		srcDirs 'resources'
+	}
+}
+
+jar {
+	manifest {
+		attributes 'FMLCorePlugin': 'squeek.applecore.AppleCore'
+		attributes 'FMLCorePluginContainsFMLMod': 'true'
+	}
+}
+
+task deobfArtifact(type: Jar) {
+	from sourceSets.main.output
+	manifest = jar.manifest
+	classifier = 'deobf'
+}
+
+task apiArtifact(type: Jar, dependsOn: compileJava) {
+	from sourceSets.main.output
+	include "squeek/applecore/api/**"
+	classifier = 'api'
+}
+
+task sourcesArtifact(type: Jar, dependsOn: compileJava) {
+	from tasks.sourceMainJava.output
+	classifier = 'sources'
+}
+
+artifacts {
+	archives deobfArtifact
+	archives apiArtifact
+	archives sourcesArtifact
+}
+
+processResources {
+	inputs.property "vars", project.version + project.minecraft.version + api_version
+	from(sourceSets.main.resources.srcDirs) {
+		include '**/*.info'
+		expand 'version':project.version, 'mcversion':project.minecraft.version, 'apiversion':api_version
+	}
+	from(sourceSets.main.resources.srcDirs) {
+		exclude '**/*.info'
+	}
+}
+
+task removeExampleAndReferenceSources(type:Delete) {
+	delete += tasks.sourceMainJava.output.getPath()+"/squeek/applecore/example"
+	delete += tasks.sourceMainJava.output.getPath()+"/squeek/applecore/asm/reference"
+}
+
+task removeExampleAndReferenceResources(type:Delete) {
+	delete += file(sourceSets.main.output.resourcesDir.getPath()+"/mcmod.info")
+}
+
+// insert custom tasks
+afterEvaluate { project ->
+	if (!project.hasProperty('buildexample'))
+	{
+		sourceMainJava.finalizedBy(removeExampleAndReferenceSources)
+		processResources.finalizedBy(removeExampleAndReferenceResources)
+	}
+}
+
+ext.mavenUrl = project.hasProperty('mavenUrl') ? mavenUrl : System.getenv("MAVEN_URL")
+ext.mavenUser = project.hasProperty('mavenUser') ? mavenUser : System.getenv("MAVEN_USER")
+ext.mavenPass = project.hasProperty('mavenPass') ? mavenPass : System.getenv("MAVEN_PASS")
+def isPullRequest = System.getenv("TRAVIS_PULL_REQUEST") != null && System.getenv("TRAVIS_PULL_REQUEST") != false
+def isCI = System.getenv("CI") == true
+def isMainBranch = System.getenv("TRAVIS_BRANCH") == project.minecraft.version
+def okayToPublish = !isCI || (!isPullRequest && isMainBranch)
+
+if (mavenUrl && !project.hasProperty('nopublish') && okayToPublish) {
+	apply plugin: 'maven'
+
+	configurations {
+		deployerJars
+	}
+	dependencies {
+		deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+	}
+	uploadArchives {
+		repositories.mavenDeployer {
+			configuration = configurations.deployerJars
+			pom.artifactId = modId
+			pom.version = project.minecraft.version + "-" + project.version
+			pom.project {
+				url = "https://github.com/squeek502/" + modId
+			}
+			repository(url: mavenUrl) {
+				authentication(userName: mavenUser, password: mavenPass)
+			}
+		}
+	}
+	afterEvaluate { project ->
+		build.finalizedBy(uploadArchives)
+	}
+}
+
+task testPom << {
+	apply plugin: 'maven'
+	pom {
+		whenConfigured {pom ->
+			//pom.dependencies.removeAll {dep -> dep.groupId == "squeek.asmhelper" }
+		}
+	}.writeTo(new PrintWriter(System.out))
+}

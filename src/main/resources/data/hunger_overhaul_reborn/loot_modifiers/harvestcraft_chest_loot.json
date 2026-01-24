@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:add_loot_table",
+  "conditions": [
+    {
+      "condition": "minecraft:location_check",
+      "predicate": {
+        "structure": "minecraft:dungeon"
+      }
+    }
+  ],
+  "loot_table": "hunger_overhaul_reborn:chests/harvestcraft_dungeon"
+}
+

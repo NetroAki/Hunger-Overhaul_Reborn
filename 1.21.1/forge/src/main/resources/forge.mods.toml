@@ -1,0 +1,37 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+issueTrackerURL="https://github.com/Netroaki/hunger-overhaul-reborn/issues"
+
+[[mods]]
+modId="hunger_overhaul_reborn"
+version="${file.jarVersion}"
+displayName="Hunger Overhaul Reborn"
+displayURL="https://github.com/Netroaki/hunger-overhaul-reborn"
+logoFile="assets/hunger_overhaul_reborn/icon.png"
+authors="Netroaki"
+description='''
+A comprehensive hunger and food mechanics overhaul mod that makes hunger more challenging and realistic.
+Features include rebalanced food values, crop modifications, animal changes, and integration with popular food mods like HarvestCraft.
+'''
+
+[[dependencies.hunger_overhaul_reborn]]
+    modId="forge"
+    mandatory=true
+    versionRange="[50,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.hunger_overhaul_reborn]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.21.1]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.hunger_overhaul_reborn]]
+    modId="architectury"
+    mandatory=true
+    versionRange="[13.0.8,)"
+    ordering="AFTER"
+    side="BOTH"

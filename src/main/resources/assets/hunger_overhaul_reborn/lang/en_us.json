@@ -1,0 +1,15 @@
+{
+  "effect.hunger_overhaul_reborn.well_fed": "Well Fed",
+  "effect.hunger_overhaul_reborn.hungry": "Hungry",
+  "effect.hunger_overhaul_reborn.low_health": "Low Health",
+  "message.hunger_overhaul_reborn.cow_cooldown": "This cow needs %s more minutes before it can be milked again.",
+  "gui.hunger_overhaul_reborn.well_fed": "Well Fed: %s",
+  "gui.hunger_overhaul_reborn.hunger.hungry": "Hungry",
+  "gui.hunger_overhaul_reborn.hunger.very_hungry": "Very Hungry",
+  "gui.hunger_overhaul_reborn.hunger.starving": "Starving",
+  "gui.hunger_overhaul_reborn.health.wounded": "Wounded",
+  "gui.hunger_overhaul_reborn.health.low": "Low Health",
+  "gui.hunger_overhaul_reborn.health.critical": "Critical Health",
+  "gui.hunger_overhaul_reborn.low_health_active": "Low Health Effects Active",
+  "gui.hunger_overhaul_reborn.hunger_effect_active": "Hunger Effects Active"
+}

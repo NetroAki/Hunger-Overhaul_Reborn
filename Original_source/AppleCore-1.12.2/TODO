@@ -1,0 +1,70 @@
+General:
+
+API:
+
+Core/ASM:
+  Plant growth modification:
+   [ ] mods.natura.blocks.trees.SaguaroBlock
+   [ ] com.mark719.magicalcrops.crops.MagicalCrops
+   [ ] com.mark719.magicalcrops.crops.BlockMagicalCropsIridium
+
+Test/Sample Implementations:
+
+Project Log/Notes:
+  Modifying food eating duration using the Forge event PlayerUseItemEvent.Start does not produce clean visuals; it just adds a delay to the start of the animation. The solution should be player-specific, which isn't possible by only hooking into ItemFood. @date(2014-07-24 01:45)
+    * Fixed by modifying ItemRenderer to get the modified max duration instead of getting it from the item each time @date(2014-07-27 13:30)
+  DummyModContainers can listen for events, but they need to use @Subscribe instead of @SubscribeEvent @date(2014-07-27 18:47)
+  An incorrect method signature in an INVOKE instruction can cause an ArrayIndexOutOfBoundsException in Frame.merge @date(2014-07-28 16:59)
+  Using the label past the return as the end label of a newly added local variable in ASM can sometimes cause an ArrayIndexOutOfBoundException in obfuscated environments. Why? Who knows. @date(2014-08-03 02:05)
+  Without a FMLModContainer class (@Mod annotated class), the mod will not automatically get added as a resource pack @date(14-08-24 20:46)
+  Couldn't find a way to add the mod as a resource pack in a dev environment, because the source directory of a coremod is basically unknown (it'll either give you the dummy jar or null) @date(14-08-24 22:28)
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ [-] mods.natura.blocks.crops.HerbBlock @cancelled (2014-08-03 19:57) @project(Core/ASM)
+ [x] mods.natura.blocks.crops.Glowshroom @done (2014-08-03 19:56) @project(Core/ASM)
+ [x] mods.natura.blocks.crops.NetherBerryBush @done (2014-08-03 19:52) @project(Core/ASM)
+ [x] mods.natura.blocks.crops.CropBlock @done (2014-08-03 19:50) @project(Core/ASM)
+ [x] mods.natura.blocks.crops.BerryBush @done (2014-08-03 19:45) @project(Core/ASM)
+ [x] BlockPamSapling @done (2014-08-03 19:36) @project(Core/ASM)
+ [x] BlockPamFruit @done (2014-08-03 19:29) @project(Core/ASM)
+ [-] BlockPamFlower @started(2014-08-03 19:05) @cancelled (2014-08-03 19:12) @wasted(0:07) @project(Core/ASM)
+ [x] Add support for showing more-than-normal player-specific food values in the tooltip overlay @done (2014-08-03 18:55) @project(General)
+ [x] Move HUD/tooltip stuff from TSoL to AppleCore @done (2014-08-03 17:37) @project(General)
+ [x] Document PlantGrowthEvents @started(2014-07-29 22:19) @done (2014-07-29 22:22) @lasted(0:03) @project(API)
+ [x] Implement event-driven growth ticks @done (2014-07-29 22:19) @project(API)
+ [x] Crop growth modification @done (2014-07-29 22:19) @project(Test/Sample Implementations)
+ [x] net.minecraft.block.BlockStem @started(2014-07-29 21:51) @done (2014-07-29 22:18) @lasted(0:27) @project(API)
+ [x] net.minecraft.block.BlockSapling @started(2014-07-29 21:45) @done (2014-07-29 21:51) @lasted(0:06) @project(API)
+ [x] net.minecraft.block.BlockNetherWart @started(2014-07-29 21:38) @done (2014-07-29 21:45) @lasted(0:07) @project(API)
+ [x] net.minecraft.block.BlockMushroom @started(2014-07-29 21:34) @done (2014-07-29 21:38) @lasted(0:04) @project(API)
+ [x] net.minecraft.block.BlockCocoa @started(2014-07-29 21:26) @done (2014-07-29 21:34) @lasted(0:08) @project(API)
+ [x] net.minecraft.block.BlockCactus @started(2014-07-29 21:22) @done (2014-07-29 21:26) @lasted(0:04) @project(API)
+ [x] net.minecraft.block.BlockReed @started(2014-07-29 21:03) @done (2014-07-29 21:22) @lasted(0:19) @project(API)
+ [x] net.minecraft.block.BlockCrops @done (2014-07-29 20:50) @project(API)
+ [x] Add support for block-based foods (cake) @done (2014-07-28 17:10) @project(General)
+ [x] Document AppleCoreAccessor/IAppleCoreAccessor @done (2014-07-28 12:53) @project(API)
+ [x] Add a way to get starvation damage period @done (2014-07-27 22:24) @project(API)
+ [x] Add a way to get max exhaustion @done (2014-07-27 22:24) @project(API)
+ [x] Add a way to get health regen period @done (2014-07-27 22:24) @project(API)
+ [x] Move saturation/exhaustion values shown in debug info from The Spice of Life to AppleCore @done (2014-07-27 18:42) @project(General)
+ [x] Move saturation/exhaustion syncing from The Spice of Life to AppleCore @done (2014-07-27 18:42) @project(General)
+ [x] Implement better food eating speed modification event @done (2014-07-27 13:31) @project(API)
+ [x] Modifying eating speed @done (2014-07-27 13:28) @project(Test/Sample Implementations)
+ [x] Setup build.gradle to be maven-ready @done (2014-07-27 02:19) @project(General)
+ [x] Event documentation @done (2014-07-27 02:19) @project(API)
+ [x] Exclude example mod metadata file from gradle build @started(2014-07-24 19:54) @done (2014-07-24 20:04) @lasted(0:10) @project(General)
+ [x] Implement event-driven FoodStats modification canceling @done (2014-07-24 19:47) @project(API)
+ [x] Fix example mod metadata @done (2014-07-24 19:47) @project(General)
+ [x] Canceling food stats changes @done (2014-07-24 19:47) @project(Test/Sample Implementations)
+ [x] Exclude example/reference packages in build.gradle @done (2014-07-24 12:35) @project(General)
+ [-] Modifying eating speed using PlayerUseItemEvent.Start @cancelled (2014-07-24 12:23) @project(Test/Sample Implementations)
+ [x] Break FoodEvent up into multiple files @started(2014-07-24 12:03) @done (2014-07-24 12:14) @lasted(0:11) @project(API)
+ [x] Modifying starvation @done (2014-07-24 01:38) @project(Test/Sample Implementations)
+ [x] Modifying regen health @done (2014-07-24 01:38) @project(Test/Sample Implementations)
+ [x] Modifying hunger/saturation @done (2014-07-24 01:38) @project(Test/Sample Implementations)
+ [x] Modifying exhaustion @done (2014-07-24 01:38) @project(Test/Sample Implementations)
+ [x] Implement event-driven starvation @done (2014-07-24 01:38) @project(API)
+ [x] Implement event-driven configurable health regen @done (2014-07-24 01:38) @project(API)
+ [x] Implement event-driven configurable exhaustion @done (2014-07-24 01:38) @project(API)
+ [x] Add a way for mods to be able to integrate their plant growth with AppleCore @done (15-01-27 14:50) @project(API)

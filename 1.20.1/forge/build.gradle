@@ -52,8 +52,111 @@ dependencies {
     // AppleCore dependency (required) - using a more appropriate version
     // modImplementation "squeek.applecore:AppleCore:1.20.1-1.0.0"
     
-    // Optional mod dependencies
-    // modImplementation "com.pam.harvestcraft:harvestcraft:1.20.1-1.0.0"
+    // Optional mod dependencies - Runtime only (for testing integrations)
+    
+    // HarvestCraft (Pam's HarvestCraft 2) - CurseForge
+    // Project ID: 361841, find file ID at: https://www.curseforge.com/minecraft/mc-mods/pams-harvestcraft-2
+    // modRuntimeOnly "curse.maven:pams-harvestcraft-2-361841:FILE_ID"
+    
+    // Natura - DEPRECATED: No longer exists for 1.20.1+
+    // Functionality has been integrated into Tinkers' Construct
+    // If you need Natura features, use Tinkers' Construct instead
+    
+    // Tinkers' Construct - Modrinth or CurseForge
+    // Modrinth: https://modrinth.com/mod/tinkers-construct
+    // modRuntimeOnly "maven.modrinth:tinkers-construct:VERSION_ID"
+    // Or CurseForge: Project ID: 74072
+    // modRuntimeOnly "curse.maven:tinkers-construct-74072:FILE_ID"
+    
+    // Biomes O' Plenty - Modrinth or CurseForge
+    // Modrinth: https://modrinth.com/mod/biomes-o-plenty
+    // modRuntimeOnly "maven.modrinth:biomes-o-plenty:VERSION_ID"
+    // Or CurseForge: Project ID: 220318
+    // modRuntimeOnly "curse.maven:biomes-o-plenty-220318:FILE_ID"
+    
+    // Farmer's Delight - Modrinth
+    // Modrinth: https://modrinth.com/mod/farmers-delight (R2OftAxM)
+    // modRuntimeOnly "maven.modrinth:farmers-delight:VERSION_ID"
+    
+    // Delightful - Modrinth
+    // Modrinth: https://modrinth.com/mod/delightful (JtSnhtNJ)
+    // modRuntimeOnly "maven.modrinth:delightful:VERSION_ID"
+    
+    // Aquaculture 2 - CurseForge
+    // Project ID: 60028, find file ID at: https://www.curseforge.com/minecraft/mc-mods/aquaculture
+    // modRuntimeOnly "curse.maven:aquaculture-60028:FILE_ID"
+    
+    // Thermal Cultivation - Modrinth
+    // Modrinth: https://modrinth.com/mod/thermal-cultivation (5beJoehw)
+    // modRuntimeOnly "maven.modrinth:thermal-cultivation:VERSION_ID"
+    
+    // Create: Food - Modrinth
+    // Modrinth: https://modrinth.com/mod/create-food (4HnO3el1)
+    // modRuntimeOnly "maven.modrinth:create-food:VERSION_ID"
+    
+    // Create Gourmet - CurseForge
+    // Project ID: 867119, find file ID at: https://www.curseforge.com/minecraft/mc-mods/create-gourmet
+    // modRuntimeOnly "curse.maven:create-gourmet-867119:FILE_ID"
+    
+    // Spice of Life: Carrot Edition - CurseForge
+    // Project ID: 277616, find file ID at: https://www.curseforge.com/minecraft/mc-mods/spice-of-life-carrot-edition
+    // modRuntimeOnly "curse.maven:sol-carrot-277616:FILE_ID"
+    
+    // Ice and Fire - Modrinth
+    // Modrinth: https://modrinth.com/mod/ice-and-fire (LVnvHVBp)
+    // modRuntimeOnly "maven.modrinth:ice-and-fire:VERSION_ID"
+    
+    // Productive Bees - Modrinth
+    // Modrinth: https://modrinth.com/mod/productive-bees (jH6iiqkd)
+    // modRuntimeOnly "maven.modrinth:productive-bees:VERSION_ID"
+    
+    // Productive Trees - Modrinth
+    // Modrinth: https://modrinth.com/mod/productive-trees (BTmup08e)
+    // modRuntimeOnly "maven.modrinth:productive-trees:VERSION_ID"
+    
+    // Twilight Forest - CurseForge
+    // Project ID: 227639, find file ID at: https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest
+    // modRuntimeOnly "curse.maven:twilight-forest-227639:FILE_ID"
+    
+    // Alex's Mobs - Modrinth
+    // Modrinth: https://modrinth.com/mod/alexs-mobs (2cMuAZAp)
+    // modRuntimeOnly "maven.modrinth:alexs-mobs:VERSION_ID"
+    
+    // CookingForBlockheads - Modrinth
+    // Modrinth: https://modrinth.com/mod/cookingforblockheads (vJnhuDde)
+    // modRuntimeOnly "maven.modrinth:cookingforblockheads:VERSION_ID"
+    
+    // DivineRPG - Modrinth
+    // Modrinth: https://modrinth.com/mod/divinerpg (F3kLpGw6)
+    // modRuntimeOnly "maven.modrinth:divinerpg:VERSION_ID"
+    
+    // Better End - Modrinth
+    // Modrinth: https://modrinth.com/mod/better-end (gc8OEnCC)
+    // modRuntimeOnly "maven.modrinth:better-end:VERSION_ID"
+    
+    // Better Nether - Modrinth
+    // Modrinth: https://modrinth.com/mod/better-nether (MpzVLzy5)
+    // modRuntimeOnly "maven.modrinth:better-nether:VERSION_ID"
+    
+    // The Aether - Modrinth
+    // Modrinth: https://modrinth.com/mod/the-aether (YhmgMVyu)
+    // modRuntimeOnly "maven.modrinth:the-aether:VERSION_ID"
+    
+    // Mowzie's Mobs - Modrinth
+    // Modrinth: https://modrinth.com/mod/mowzies-mobs (BFbX9xcm)
+    // modRuntimeOnly "maven.modrinth:mowzies-mobs:VERSION_ID"
+    
+    // Oh The Trees You'll Grow - Modrinth
+    // Modrinth: https://modrinth.com/mod/oh-the-trees-youll-grow (g8NOG5OR)
+    // modRuntimeOnly "maven.modrinth:oh-the-trees-youll-grow:VERSION_ID"
+    
+    // Reliquary - CurseForge
+    // Project ID: 241319, find file ID at: https://www.curseforge.com/minecraft/mc-mods/reliquary-v1-3
+    // modRuntimeOnly "curse.maven:reliquary-241319:FILE_ID"
+    
+    // Cataclysm (L_Ender's Cataclysm) - Modrinth
+    // Modrinth: https://modrinth.com/mod/cataclysm (46KJle7n)
+    // modRuntimeOnly "maven.modrinth:cataclysm:VERSION_ID"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')

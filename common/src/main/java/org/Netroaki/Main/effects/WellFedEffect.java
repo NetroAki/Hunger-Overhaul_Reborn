@@ -1,24 +1,35 @@
 package org.Netroaki.Main.effects;
 
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ItemStack;
+import org.Netroaki.Main.util.VersionDetector;
 
 import java.util.UUID;
 
-public class WellFedEffect extends MobEffect {
+// Version-aware effect class
+public class WellFedEffect {
     private static final UUID HEALTH_REGEN_UUID = UUID.fromString("7107DE5E-7CE8-4030-940E-514C1F160890");
 
-    public WellFedEffect() {
-        super(MobEffectCategory.BENEFICIAL, 0xFFD700);
+    // Only create the actual effect on 1.20.1
+    private Object effectInstance;
+
+	public WellFedEffect() {
+		// For now, always set to null - effects are disabled for compatibility
+		// This allows the code to compile but effects won't work
+		effectInstance = null;
+	}
+
+    public Object getEffectInstance() {
+        return effectInstance;
+    }
+
+    public boolean isAvailable() {
+        return effectInstance != null;
     }
 
     public String getDescriptionId() {
         return "effect.hunger_overhaul_reborn.well_fed";
     }
 
-    public ItemStack getIcon() {
-        return new ItemStack(Items.BREAD);
+    public Object getIcon() {
+        return null;
     }
 }

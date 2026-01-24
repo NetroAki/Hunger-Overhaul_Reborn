@@ -28,9 +28,31 @@ public final class HOReborn {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(MOD_ID, Registries.MOB_EFFECT);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD_ID, Registries.ITEM);
 
-    // Effects
-    public static final RegistrySupplier<MobEffect> WELL_FED_EFFECT = EFFECTS.register("well_fed", WellFedEffect::new);
-    public static final RegistrySupplier<MobEffect> HUNGRY_EFFECT = EFFECTS.register("hungry", HungryEffect::new);
+    // Effects - Version-aware registration
+    public static WellFedEffect WELL_FED_EFFECT_INSTANCE;
+    public static HungryEffect HUNGRY_EFFECT_INSTANCE;
+    public static LowHealthEffect LOW_HEALTH_EFFECT_INSTANCE;
+
+    public static RegistrySupplier<MobEffect> WELL_FED_EFFECT;
+    public static RegistrySupplier<MobEffect> HUNGRY_EFFECT;
+    public static RegistrySupplier<MobEffect> LOW_HEALTH_EFFECT;
+
+    static {
+        // Create effect instances - they handle version detection internally
+        WELL_FED_EFFECT_INSTANCE = new WellFedEffect();
+        HUNGRY_EFFECT_INSTANCE = new HungryEffect();
+
+        // Try to create LowHealthEffect if available (only on 1.20.1)
+        try {
+            LOW_HEALTH_EFFECT_INSTANCE = new LowHealthEffect();
+        } catch (Exception e) {
+            LOW_HEALTH_EFFECT_INSTANCE = null;
+        }
+
+        // Effects are currently disabled for compatibility across versions
+        // They will be null and code should check for null before using
+        LOGGER.info("Custom effects are disabled for version compatibility");
+    }
 
     // Modules
     public static final FoodModule FOOD_MODULE = new FoodModule();

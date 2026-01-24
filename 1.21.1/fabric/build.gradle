@@ -7,6 +7,8 @@ architectury {
     fabric()
 }
 
+// 1.21.1 fabric-specific configuration
+
 configurations {
     common {
         canBeResolved = true
@@ -57,8 +59,10 @@ dependencies {
     // Optional mod dependencies
     // modImplementation "com.pam.harvestcraft:harvestcraft:1.20.1-1.0.0"
 
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
-    shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
+    // For 1.21.1, we don't use the common project due to API incompatibilities
+    // Only version-specific code is used
+    // common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    // shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 }
 
 processResources {

@@ -173,6 +173,10 @@ example/
 /*.md
 !README.md
 !MULTI_VERSION_SETUP.md
+!changelog.md
+
+# Build Artifacts
+releases/
 
 # Original mod source (exclude the master branch copy)
 HungerOverhaul-master/

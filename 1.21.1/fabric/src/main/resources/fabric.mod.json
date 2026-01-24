@@ -14,9 +14,6 @@
   "license": "MIT",
   "icon": "assets/hunger_overhaul_reborn/icon.png",
   "environment": "*",
-  "mixins": [
-    "hunger_overhaul_reborn.mixins.json"
-  ],
   "entrypoints": {
     "main": [
       "org.Netroaki.Main.fabric.HORebornFabric"
@@ -25,6 +22,7 @@
       "org.Netroaki.Main.fabric.HORebornFabricClient"
     ]
   },
+  "mixins": [],
 
   "depends": {
     "fabricloader": ">=0.17.2",

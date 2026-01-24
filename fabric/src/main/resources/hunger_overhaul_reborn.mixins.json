@@ -1,9 +1,9 @@
 {
   "required": true,
-  "package": "org.Netroaki.Main.mixin",
+  "package": "org.Netroaki.Main.mixin.fabric",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8.5",
-  "plugin": "org.Netroaki.Main.mixin.HORMixinPlugin",
+  "plugin": "org.Netroaki.Main.mixin.fabric.HORMixinPlugin",
   "mixins": [
     "AgeableBlockMixin",
     "BowlFoodItemMixin",
