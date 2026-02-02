@@ -1,14 +1,7 @@
+// Forgix configuration for merging Fabric and Forge JARs
+// This file is intentionally minimal - Forgix is not actively used but the plugin is loaded
+
 forgix {
-    group = 'org.Netroaki'
-    mergedJarName = 'hunger_overhaul_reborn-0.2.1-beta-universal-1.20.1.jar'
-    outputDir = 'build/libs'
-    
-    // Use custom() to specify Stonecutter subproject names
-    custom {
-        projectName = '1.20.1-fabric'
-    }
-    
-    custom {
-        projectName = '1.20.1-forge'
-    }
+    // Forgix is disabled for this multi-version setup
+    // If merging is needed, configure groups here
 }
