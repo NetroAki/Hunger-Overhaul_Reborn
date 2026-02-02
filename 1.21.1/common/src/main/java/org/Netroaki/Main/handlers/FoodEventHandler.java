@@ -22,6 +22,9 @@ import org.Netroaki.Main.util.FoodUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+
 public class FoodEventHandler {
     private static final Map<Item, FoodProperties> ORIGINAL_FOOD_PROPERTIES = new HashMap<>();
     private static final Map<Item, Integer> ORIGINAL_MAX_STACK_SIZES = new HashMap<>();
@@ -30,7 +33,6 @@ public class FoodEventHandler {
         LifecycleEvent.SERVER_LEVEL_LOAD.register(FoodEventHandler::onServerStarting);
 
         // Register eating event to handle Well Fed and Health Regen
-        EntityEvent.LIVING_USE_ITEM_FINISH.register(FoodEventHandler::onLivingUseItemFinish);
     }
 
     private static void onServerStarting(Level level) {
@@ -42,16 +44,8 @@ public class FoodEventHandler {
         }
     }
 
-    private static EventResult onLivingUseItemFinish(LivingEntity entity, ItemStack stack, int duration,
-            ItemStack result) {
-        if (entity instanceof Player player) {
-            onFoodConsumed(player, stack);
-        }
-        return EventResult.pass();
-    }
-
     public static void onFoodConsumed(Player player, ItemStack stack) {
-        if (HungerOverhaulConfig.getInstance().food.enableWellFedEffect && stack.isEdible()) {
+        if (HungerOverhaulConfig.getInstance().food.enableWellFedEffect && stack.has(DataComponents.FOOD)) {
 
             // Use modified values for effects logic to respect config
             FoodValues modifiedValues = getModifiedFoodValues(stack);
@@ -71,11 +65,12 @@ public class FoodEventHandler {
 
                 if (duration > 0 && HOReborn.WELL_FED_EFFECT != null) {
                     // Check if initialized safely for 1.21.1
-                    MobEffectInstance existingEffect = player.getEffect(HOReborn.WELL_FED_EFFECT.get());
+                    var effectHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(HOReborn.WELL_FED_EFFECT.get());
+                    MobEffectInstance existingEffect = player.getEffect(effectHolder);
                     int newDuration = existingEffect != null ? existingEffect.getDuration() + duration : duration;
                     int newAmplifier = Math.min(existingEffect != null ? existingEffect.getAmplifier() + 1 : 0, 3);
 
-                    player.addEffect(new MobEffectInstance(HOReborn.WELL_FED_EFFECT.get(), newDuration, newAmplifier));
+                    player.addEffect(new MobEffectInstance(effectHolder, newDuration, newAmplifier));
                 }
             }
         }
@@ -89,9 +84,9 @@ public class FoodEventHandler {
         // Currently a no-op in 1.21.1 implementation of FoodUtil
         // setup only for future compatibility
         for (Item item : FoodUtil.getAllFoodItems()) {
-            if (item.getFoodProperties() != null) {
-                ORIGINAL_FOOD_PROPERTIES.put(item, item.getFoodProperties());
-                ORIGINAL_MAX_STACK_SIZES.put(item, item.getMaxStackSize());
+            if (item.components().has(DataComponents.FOOD)) {
+                ORIGINAL_FOOD_PROPERTIES.put(item, item.components().get(DataComponents.FOOD));
+                ORIGINAL_MAX_STACK_SIZES.put(item, item.components().getOrDefault(DataComponents.MAX_STACK_SIZE, 64));
             }
         }
     }
@@ -111,7 +106,8 @@ public class FoodEventHandler {
 
         // Fall back to modified properties calculation
         // Even if we didn't change the item, we can calculate what it SHOULD be
-        FoodProperties original = item.getFoodProperties(); // Use current as base if original map empty
+        FoodProperties original = item.components().get(DataComponents.FOOD); // Use current as base if original map
+                                                                              // empty
         if (ORIGINAL_FOOD_PROPERTIES.containsKey(item)) {
             original = ORIGINAL_FOOD_PROPERTIES.get(item);
         }
@@ -133,7 +129,7 @@ public class FoodEventHandler {
         // Auto-categorize based on item name
         FoodCategorizer.FoodValue foodValue = FoodCategorizer.categorizeFood(itemName);
         int nutrition = foodValue.hunger;
-        float saturation = original.getSaturationModifier();
+        float saturation = original.saturation();
 
         // Apply original Hunger Overhaul calculation logic
         if (config.food.modifyFoodValues) {
@@ -172,15 +168,17 @@ public class FoodEventHandler {
     }
 
     private static int getStackSizeForFoodValue(int foodValue) {
+        HungerOverhaulConfig.FoodSettings foodConfig = HungerOverhaulConfig.getInstance().food;
+
         if (foodValue >= 8)
-            return 1;
+            return foodConfig.stackSizeLargeMeal;
         if (foodValue >= 6)
-            return 4;
+            return foodConfig.stackSizeAverageMeal;
         if (foodValue >= 4)
-            return 16;
+            return foodConfig.stackSizeLightMeal;
         if (foodValue >= 2)
-            return 32;
-        return 32;
+            return foodConfig.stackSizeCookedMeal;
+        return foodConfig.stackSizeRawMeal;
     }
 
     public static String getFoodDescription(int foodValue, float saturation) {

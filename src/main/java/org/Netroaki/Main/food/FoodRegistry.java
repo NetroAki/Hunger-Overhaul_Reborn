@@ -5,8 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.Netroaki.Main.HOReborn;
-import org.Netroaki.Main.applecore.FoodEvent;
-import org.Netroaki.Main.applecore.FoodValues;
+import org.Netroaki.Main.api.FoodEvent;
+import org.Netroaki.Main.api.FoodValues;
 import org.Netroaki.Main.util.FoodCategorizer;
 
 import java.util.HashMap;
@@ -24,19 +24,23 @@ public class FoodRegistry {
      * Initialize the food registry with auto-generated values.
      */
     public static void initialize() {
-        if (initialized) return;
+        if (initialized)
+            return;
 
         // Auto-generate food values for all food items
         for (Item item : BuiltInRegistries.ITEM) {
-            if (item.getFoodProperties() == null) continue;
+            if (item.getFoodProperties() == null)
+                continue;
 
             ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
-            if (id == null) continue;
+            if (id == null)
+                continue;
 
             String itemId = id.toString();
 
             // Skip if already in registry (manual override)
-            if (foodValues.containsKey(itemId)) continue;
+            if (foodValues.containsKey(itemId))
+                continue;
 
             // Auto-categorize and generate values
             String itemName = id.getPath();
@@ -44,10 +48,9 @@ public class FoodRegistry {
 
             // Store the categorized values
             foodValues.put(itemId, new FoodValueData(
-                categorized.hunger,
-                categorized.saturation,
-                categorized.mealType
-            ));
+                    categorized.hunger,
+                    categorized.saturation,
+                    categorized.mealType));
         }
 
         initialized = true;
@@ -59,7 +62,8 @@ public class FoodRegistry {
      */
     public static FoodValues getFoodValues(ItemStack stack) {
         ResourceLocation id = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        if (id == null) return FoodValues.getUnmodified(stack);
+        if (id == null)
+            return FoodValues.getUnmodified(stack);
 
         String itemId = id.toString();
         FoodValueData data = foodValues.get(itemId);
@@ -70,10 +74,9 @@ public class FoodRegistry {
         if (data == null) {
             // No data in registry, use unmodified and add to registry
             foodValues.put(itemId, new FoodValueData(
-                unmodified.hunger,
-                unmodified.saturationModifier,
-                "AUTO_GENERATED"
-            ));
+                    unmodified.hunger,
+                    unmodified.saturationModifier,
+                    "AUTO_GENERATED"));
             return unmodified;
         }
 

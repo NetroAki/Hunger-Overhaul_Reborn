@@ -6,7 +6,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.Netroaki.Main.applecore.PlantGrowthEvent;
+import org.Netroaki.Main.api.PlantGrowthEvent;
 import org.Netroaki.Main.config.HungerOverhaulConfig;
 // import org.Netroaki.Main.util.DebugMetrics;
 import org.Netroaki.Main.util.BiomeGrowthRegistry;
@@ -35,25 +35,29 @@ public class AgeableBlockMixin {
         int maxAge = cropBlock.getMaxAge();
         BlockState newState = cropBlock.getStateForAge(age + 1);
 
-        // Note: Plant growth event firing would go here in full AppleCore implementation
+        // Note: Plant growth event firing would go here in full AppleCore
+        // implementation
 
         // Track attempt
         // DebugMetrics.recordAttempt();
 
         // Apply growth modifiers in order (original Hunger Overhaul logic)
 
-        // 1. Sunlight check
-        double sunlightModifier = 1.0;
+        // 1. Sunlight check - match Forge behavior: strict block if not day or low sky
+        // light
         if (config.crops.cropsOnlyGrowInDaylight) {
             int sky = level.getBrightness(LightLayer.SKY, pos);
+            // Log debug info occasionally or if night
+            // Log debug info occasionally or if night
+            if (!level.isDay())
+                org.Netroaki.Main.HOReborn.LOGGER
+                        .info("Night growth check: Day=" + level.isDay() + " Sky=" + sky + " Pos=" + pos);
+
             if (!level.isDay() || sky < 9) {
-                // Not binary anymore - apply multiplier
-                sunlightModifier = config.crops.noSunlightRegrowthMultiplier;
-                if (sunlightModifier == 0) {
-                    // DebugMetrics.recordDaylightBlocked();
-                    ci.cancel();
-                    return;
-                }
+                // Block growth completely like Forge does
+                // DebugMetrics.recordDaylightBlocked();
+                ci.cancel();
+                return;
             }
         }
 
@@ -65,10 +69,10 @@ public class AgeableBlockMixin {
             boolean isSugarcane = state.getBlock() == net.minecraft.world.level.block.Blocks.SUGAR_CANE;
             if (isSugarcane) {
                 biomeModifier = BiomeGrowthRegistry.getSugarcaneBiomeMultiplier(
-                    level.getBiome(pos).value(), biomeKey.get());
+                        level.getBiome(pos).value(), biomeKey.get());
             } else {
                 biomeModifier = BiomeGrowthRegistry.getBiomeMultiplier(
-                    level.getBiome(pos).value(), biomeKey.get());
+                        level.getBiome(pos).value(), biomeKey.get());
             }
 
             if (biomeModifier == 0) {
@@ -95,8 +99,8 @@ public class AgeableBlockMixin {
         double difficultyModifier = getDifficultyMultiplier(level);
 
         // Calculate final probability
-        double finalMultiplier = sunlightModifier * biomeModifier * cropTypeModifier *
-                                seasonModifier * difficultyModifier;
+        double finalMultiplier = biomeModifier * cropTypeModifier *
+                seasonModifier * difficultyModifier;
 
         // Clamp to valid range
         finalMultiplier = Math.max(0.0, Math.min(1.0, finalMultiplier));

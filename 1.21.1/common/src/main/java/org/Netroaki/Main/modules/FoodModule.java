@@ -8,6 +8,8 @@ import org.Netroaki.Main.HOReborn;
 import org.Netroaki.Main.config.HungerOverhaulConfig;
 import org.Netroaki.Main.util.FoodUtil;
 
+import net.minecraft.core.component.DataComponents;
+
 public class FoodModule {
 
     public void init() {
@@ -20,7 +22,7 @@ public class FoodModule {
     // Legacy method kept for API compatibility if needed, but logic moved to Client
     // module for events
     public static Component getFoodTooltip(ItemStack stack) {
-        if (!stack.isEdible())
+        if (!stack.has(DataComponents.FOOD))
             return null;
         String desc = FoodUtil.getFoodDescription(stack);
         return desc.isEmpty() ? null : Component.literal(desc);

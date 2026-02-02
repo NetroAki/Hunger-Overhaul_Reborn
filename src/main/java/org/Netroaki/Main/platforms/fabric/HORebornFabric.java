@@ -64,6 +64,8 @@ public final class HORebornFabric implements ModInitializer {
 
         // Register villager trades (HarvestCraft) if enabled
         registerVillagerTrades();
+
+        HOReborn.LOGGER.info("[HOR Cleanup] Final Rabbit Stew Stack Size: " + Items.RABBIT_STEW.getMaxStackSize());
     }
 
     private void registerFabricEvents() {
@@ -100,7 +102,7 @@ public final class HORebornFabric implements ModInitializer {
 
             BlockPos pos = hitResult.getBlockPos();
             BlockState state = world.getBlockState(pos);
-            
+
             // Handle crop harvesting (right-click on mature crops)
             InteractionResult harvestResult = HarvestHandler.handleRightClickHarvest(player, world, hand, hitResult);
             if (harvestResult != InteractionResult.PASS) {
@@ -132,7 +134,7 @@ public final class HORebornFabric implements ModInitializer {
 
             // Handle animal interactions (cow milking timeout)
             InteractionResult animalResult = AnimalHandler.handleAnimalInteraction(player, world, hand,
-                (EntityHitResult) hitResult);
+                    (EntityHitResult) hitResult);
             if (animalResult != InteractionResult.PASS) {
                 return animalResult;
             }
@@ -147,7 +149,7 @@ public final class HORebornFabric implements ModInitializer {
             }
 
             ItemStack stack = player.getItemInHand(hand);
-            
+
             // Handle eating speed modification
             if (stack.isEdible() && HungerOverhaulConfig.getInstance().food.modifyEatingSpeed) {
                 var food = stack.getItem().getFoodProperties();
@@ -162,13 +164,17 @@ public final class HORebornFabric implements ModInitializer {
             return net.minecraft.world.InteractionResultHolder.pass(stack);
         });
 
-        // Register block break events (tall grass removal)
-        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
-            if (state.getBlock() instanceof net.minecraft.world.level.block.TallGrassBlock) {
-                return false; // Cancel the break event
-            }
-            return true; // Allow the break event
-        });
+        // Loot Table replacement to remove Tall Grass seeds
+        net.fabricmc.fabric.api.loot.v2.LootTableEvents.REPLACE
+                .register((resourceManager, lootManager, id, original, source) -> {
+                    if (HungerOverhaulConfig.getInstance().crops.removeTallGrassSeeds) {
+                        if (id.equals(net.minecraft.world.level.block.Blocks.TALL_GRASS.getLootTable()) ||
+                                id.equals(net.minecraft.world.level.block.Blocks.GRASS.getLootTable())) {
+                            return net.minecraft.world.level.storage.loot.LootTable.EMPTY;
+                        }
+                    }
+                    return null; // Keep original
+                });
 
         // Register entity events for animal breeding and growth
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {

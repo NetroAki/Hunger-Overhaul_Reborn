@@ -132,39 +132,41 @@ public class FoodEventHandler {
     }
 
     private static int getWellFedDuration(int foodValue) {
-        if (foodValue >= 14)
+        if (foodValue >= 8)
             return 480;
-        if (foodValue >= 10)
+        if (foodValue >= 6)
             return 240;
-        if (foodValue >= 7)
-            return 120;
         if (foodValue >= 4)
+            return 120;
+        if (foodValue >= 2)
             return 40;
         return 0;
     }
 
     public static int getEatingDuration(int foodValue) {
-        if (foodValue >= 14)
+        if (foodValue >= 8)
             return 64;
-        if (foodValue >= 10)
+        if (foodValue >= 6)
             return 48;
-        if (foodValue >= 7)
-            return 32;
         if (foodValue >= 4)
-            return 24;
-        return 16;
+            return 32;
+        if (foodValue >= 2)
+            return 20;
+        return 10;
     }
 
     private static int getStackSizeForFoodValue(int foodValue) {
-        if (foodValue >= 14)
-            return 1;
-        if (foodValue >= 10)
-            return 4;
-        if (foodValue >= 7)
-            return 8;
+        HungerOverhaulConfig.FoodSettings foodConfig = HungerOverhaulConfig.getInstance().food;
+
+        if (foodValue >= 8)
+            return foodConfig.stackSizeLargeMeal;
+        if (foodValue >= 6)
+            return foodConfig.stackSizeAverageMeal;
         if (foodValue >= 4)
-            return 16;
-        return 32;
+            return foodConfig.stackSizeLightMeal;
+        if (foodValue >= 2)
+            return foodConfig.stackSizeCookedMeal;
+        return foodConfig.stackSizeRawMeal;
     }
 
     public static String getFoodDescription(int foodValue, float saturation) {

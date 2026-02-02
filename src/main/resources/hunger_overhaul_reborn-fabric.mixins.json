@@ -9,9 +9,14 @@
     "EatingDurationMixin",
     "FoodItemMixin",
     "HoneyBottleItemMixin",
+    "HoeItemMixin",
+    "ItemAccessor",
     "ItemsMixin",
     "MilkBucketItemMixin",
-    "SuspiciousStewItemMixin"
+    "SuspiciousStewItemMixin",
+    "AgeableBlockMixin",
+    "AgeableMobMixin",
+    "AnimalMixin"
   ],
   "client": [],
   "injectors": {

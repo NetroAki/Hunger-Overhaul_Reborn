@@ -10,6 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import org.Netroaki.Main.HOReborn;
 import org.Netroaki.Main.config.HungerOverhaulConfig;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+
 /**
  * Handles rendering GUI warnings and status text on the HUD.
  * (1.21.1 Compatible Version)
@@ -93,7 +95,8 @@ public class HudRenderer {
 
             // Show effect status - only if effects are available
             if (HOReborn.LOW_HEALTH_EFFECT != null) {
-                var lowHealthEffect = player.getEffect(HOReborn.LOW_HEALTH_EFFECT.get());
+                var lowHealthEffect = player
+                        .getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(HOReborn.LOW_HEALTH_EFFECT.get()));
                 if (lowHealthEffect != null) {
                     Component effectText = Component.translatable("gui.hunger_overhaul_reborn.low_health_active");
                     guiGraphics.drawString(font, effectText, x, y, 0xFF4444); // Dark red
@@ -102,7 +105,8 @@ public class HudRenderer {
             }
 
             if (HOReborn.HUNGRY_EFFECT != null) {
-                var hungerEffect = player.getEffect(HOReborn.HUNGRY_EFFECT.get());
+                var hungerEffect = player
+                        .getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(HOReborn.HUNGRY_EFFECT.get()));
                 if (hungerEffect != null) {
                     Component effectText = Component.translatable("gui.hunger_overhaul_reborn.hunger_effect_active");
                     guiGraphics.drawString(font, effectText, x, y, 0x884400); // Brown

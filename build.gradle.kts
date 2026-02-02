@@ -45,8 +45,8 @@ dependencies {
             parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
         })
     } else if (loader == "fabric") {
-        // Use Yarn for 1.21.1 Fabric
-        mappings("net.fabricmc:yarn:1.21.1+build.${project.property("deps.yarn_build")}:v2")
+        // Use Mojang mappings for 1.21.1 Fabric to match Common source
+        mappings(loom.officialMojangMappings())
     } else {
         // Use official Mojang mappings for 1.21.1 NeoForge
         mappings(loom.officialMojangMappings())
@@ -57,10 +57,13 @@ dependencies {
         modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("deps.fabric_version")}")
         modImplementation("dev.architectury:architectury-fabric:${project.property("deps.architectury_version")}")
 
-        // Runtime dependencies for Fabric - only for 1.20.1 as these mods aren't updated for 1.21.1
+        // Runtime dependencies for Fabric
         if (minecraft == "1.20.1") {
-            modRuntimeOnly("maven.modrinth:serene-seasons:c1BdjabH") // Serene Seasons 9.1.0.2
-            modRuntimeOnly("maven.modrinth:glitchcore:25HLOiOl") // GlitchCore 0.0.1.1
+            modRuntimeOnly("maven.modrinth:serene-seasons:9.1.0.2")
+            modRuntimeOnly("maven.modrinth:glitchcore:25HLOiOl")
+        } else if (minecraft == "1.21.1") {
+            modRuntimeOnly("maven.modrinth:serene-seasons:UqA7miTT")
+            modRuntimeOnly("maven.modrinth:glitchcore:lbSHOhee")
         }
         modRuntimeOnly("com.electronwill.night-config:core:3.6.6")
         modRuntimeOnly("com.electronwill.night-config:toml:3.6.6")
@@ -73,9 +76,17 @@ dependencies {
             val neoforgeVersion = project.property("deps.neoforge_loader") as String
             "neoForge"("net.neoforged:neoforge:$neoforgeVersion")
             modImplementation("dev.architectury:architectury-neoforge:${project.property("deps.architectury_version")}")
+            
+            // Runtime dependencies for NeoForge 1.21.1
+            modRuntimeOnly("maven.modrinth:serene-seasons:SPj5bJoM")
+            modRuntimeOnly("maven.modrinth:glitchcore:8wmCpbQ2")
         } else {
             "forge"("net.minecraftforge:forge:$minecraft-${project.property("deps.forge_loader")}")
             modImplementation("dev.architectury:architectury-forge:${project.property("deps.architectury_version")}")
+            
+            // Runtime dependencies for Forge 1.20.1
+            modRuntimeOnly("maven.modrinth:serene-seasons:9.1.0.2")
+            modRuntimeOnly("maven.modrinth:glitchcore:0.0.1.1")
         }
     }
 }
@@ -84,39 +95,55 @@ dependencies {
 sourceSets {
     main {
         java {
-            // Use shared source directory for both versions (with version detection)
-            srcDir(rootProject.file("src/main/java"))
-            // Add version-specific overrides on top
             if (minecraft == "1.21.1") {
-                srcDir(rootProject.file("$minecraft/common/src/main/java"))
-            }
+                // Task to copy/filter shared sources
+                val sharedCommon21 = tasks.register<Copy>("sharedCommon21") {
+                    from(rootProject.file("src/main/java"))
+                    into(layout.buildDirectory.dir("generated/sources/shared-21"))
+                    
+                    // Exclude files that are replaced by 1.21.1/common source
+                    exclude("**/Main/HOReborn.java")
+                    exclude("**/Main/handlers/**")
+                    exclude("**/Main/modules/**")
+                    
+                    // Exclude only replaced util files
+                    exclude("**/Main/util/BiomeGrowthRegistry.java")
+                    exclude("**/Main/util/BlockGrowthRegistry.java")
+                    exclude("**/Main/util/FoodCategorizer.java")
+                    exclude("**/Main/util/FoodUtil.java")
+                    exclude("**/Main/util/LootModifierManager.java")
+                    exclude("**/Main/util/RecipeManager.java")
+                    exclude("**/Main/util/VersionDetector.java")
 
-            // Version-specific exclusions
-            if (minecraft == "1.21.1") {
-                exclude("**/Main/HOReborn.java") // Use 1.21.1-specific HOReborn.java
-                exclude("**/Main/handlers/**") // Use 1.21.1-specific handlers
-                exclude("**/Main/modules/**") // Use 1.21.1-specific modules
-                exclude("**/Main/util/**") // Use 1.21.1-specific utilities
-                exclude("**/Main/world/**") // Use 1.21.1-specific world utilities
-                exclude("**/Main/compat/**") // Use 1.21.1-specific compatibility layer
-                exclude("**/Main/platforms/fabric/client/**") // Use 1.21.1-specific fabric client code
-                exclude("**/platforms/forge/**") // Use 1.21.1-specific forge implementation
-                exclude("**/Main/platforms/fabric/HORebornFabric.java") // Use 1.21.1-specific HORebornFabric
-                exclude("**/Main/client/HudRenderer.java") // Use 1.21.1-specific HudRenderer
-                exclude("**/applecore/**") // Exclude applecore package for 1.21.1
-                exclude("**/food/**") // Exclude food package for 1.21.1
-                exclude("**/mixin/**") // Exclude mixins for 1.21.1
-                exclude("**/config/HORConfig.java") // Exclude mixin config for 1.21.1
-                exclude("**/Main/effects/**") // Use 1.21.1-specific effect implementations
+                    exclude("**/Main/world/**")
+                    exclude("**/Main/compat/**")
+                    exclude("**/Main/platforms/fabric/client/**")
+                    exclude("**/platforms/forge/**")
+                    exclude("**/Main/platforms/fabric/HORebornFabric.java")
+                    exclude("**/Main/client/HudRenderer.java")
+                    exclude("**/applecore/**")
+                    exclude("**/food/**")
+                    exclude("**/mixin/**")
+                    exclude("**/Main/effects/**")
+                }
+                
+                // Include 1.21.1 specific code
+                srcDir(rootProject.file("$minecraft/common/src/main/java"))
+                // Include the filtered shared code
+                srcDir(sharedCommon21)
+            } else {
+                // For 1.20.1, use the shared directory as is
+                srcDir(rootProject.file("src/main/java"))
             }
 
             // Platform-specific exclusions
             if (loader == "fabric") {
                 exclude("**/platforms/forge/**")
                 exclude("**/mixin/forge/**")
-                // For 1.21.1, exclude shared platform fabric code
+                // For 1.21.1, explicitly include platform fabric code
                 if (minecraft == "1.21.1") {
-                    exclude("src/main/java/org/Netroaki/Main/platforms/fabric/**")
+                    // Fix incorrect exclusion and ensure source is included
+                    srcDir(rootProject.file("$minecraft/fabric/src/main/java"))
                 }
             } else if (loader == "forge" || loader == "neoforge") {
                 exclude("**/platforms/fabric/**")
@@ -124,37 +151,39 @@ sourceSets {
                 exclude("**/util/CompatibilityUtil.java")
             }
         }
-        // Always include shared resources first
-        resources.srcDir(rootProject.file("src/main/resources"))
-
-        // Exclude problematic files for 1.21.1 builds
         if (minecraft == "1.21.1") {
-            resources.exclude("**/hunger_overhaul_reborn*.mixins.json")
-            // For Fabric, exclude shared fabric.mod.json since we use version-specific one
+            // Priority: Version-Specific > Shared
+            val resourcesList = ArrayList<File>()
+            
             if (loader == "fabric") {
-                resources.exclude("**/fabric.mod.json")
+                resourcesList.add(rootProject.file("$minecraft/fabric/src/main/resources"))
+            } else if (loader == "neoforge") {
+                 val neoforgeResources = rootProject.file("$minecraft/forge/src/main/resources")
+                 resourcesList.add(neoforgeResources)
+                 // Enable property substitution for version-specific resources
+                 tasks.named<ProcessResources>("processResources").configure {
+                     filesMatching("META-INF/neoforge.mods.toml") {
+                         expand("version" to project.version.toString())
+                     }
+                 }
             }
-            // For NeoForge, exclude shared mods.toml since we use neoforge.mods.toml
+            
+            // Add shared resources LAST so they don't override specific ones
+            resourcesList.add(rootProject.file("src/main/resources"))
+            resources.setSrcDirs(resourcesList)
+
+            // resources.exclude("**/hunger_overhaul_reborn*.mixins.json")
+            // Removed exclude("**/fabric.mod.json") to fix loading issue
+            
             if (loader == "neoforge") {
                 resources.exclude("**/mods.toml")
             }
+        } else {
+             // For 1.20.1, standard inclusion
+             resources.srcDir(rootProject.file("src/main/resources"))
         }
 
-        // Add version-specific resources on top (these will override shared resources)
-        if (minecraft == "1.21.1") {
-            if (loader == "fabric") {
-                resources.srcDir(rootProject.file("$minecraft/fabric/src/main/resources"))
-            } else if (loader == "neoforge") {
-                val neoforgeResources = rootProject.file("$minecraft/forge/src/main/resources")
-                resources.srcDir(neoforgeResources)
-                // Enable property substitution for version-specific resources
-                tasks.named<ProcessResources>("processResources").configure {
-                    filesMatching("META-INF/neoforge.mods.toml") {
-                        expand("version" to project.version.toString())
-                    }
-                }
-            }
-        }
+
     }
 }
 

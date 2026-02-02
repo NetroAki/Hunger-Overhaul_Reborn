@@ -1,17 +1,21 @@
 {
   "required": true,
-  "package": "org.Netroaki.Main.mixin.fabric",
+  "package": "org.Netroaki.Main.mixin",
+  "refmap": "hunger_overhaul_reborn.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8.5",
-  "plugin": "org.Netroaki.Main.mixin.fabric.HORMixinPlugin",
+  "plugin": "org.Netroaki.Main.mixin.HORMixinPlugin",
   "mixins": [
-    "BowlFoodItemMixin",
-    "EatingDurationMixin",
+    "AgeableBlockMixin",
     "FoodItemMixin",
     "HoneyBottleItemMixin",
     "ItemsMixin",
     "MilkBucketItemMixin",
-    "SuspiciousStewItemMixin"
+    "SuspiciousStewItemMixin",
+    "LivingEntityMixin",
+    "AgeableMobMixin",
+    "AnimalMixin",
+    "ChickenMixin"
   ],
   "client": [],
   "injectors": {

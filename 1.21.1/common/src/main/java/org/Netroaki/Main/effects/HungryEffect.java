@@ -2,20 +2,17 @@ package org.Netroaki.Main.effects;
 
 import org.Netroaki.Main.HOReborn;
 
-// 1.21.1-compatible HungryEffect using minimal API
-public class HungryEffect {
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+
+public class HungryEffect extends MobEffect {
 
     public HungryEffect() {
+        super(MobEffectCategory.HARMFUL, 0x884400); // Brown
         HOReborn.LOGGER.info("HungryEffect initialized for 1.21.1");
     }
 
-    public String getDescriptionId() {
-        return "effect.hunger_overhaul_reborn.hungry";
-    }
-
     public boolean isAvailable() {
-        return true; // Available on 1.21.1
+        return true;
     }
-
-    // Minimal implementation - actual effect logic handled by reflection in handlers
 }

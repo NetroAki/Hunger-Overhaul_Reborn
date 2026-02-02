@@ -8,6 +8,8 @@ import org.Netroaki.Main.HOReborn;
 import org.Netroaki.Main.applecore.FoodValues;
 import org.Netroaki.Main.util.FoodCategorizer;
 
+import net.minecraft.core.component.DataComponents;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +25,7 @@ public class FoodRegistry {
             return;
 
         for (Item item : BuiltInRegistries.ITEM) {
-            if (item.getFoodProperties() == null)
+            if (!item.components().has(DataComponents.FOOD))
                 continue;
 
             ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);

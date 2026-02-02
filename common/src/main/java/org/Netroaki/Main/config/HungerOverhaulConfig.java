@@ -36,6 +36,14 @@ public class HungerOverhaulConfig {
         public boolean modifyEatingSpeed = true;
         public double modFoodValueDivider = 4.0;
         public boolean enableLowHungerWarnings = true;
+        public double foodHungerToSaturationDivider = 20.0; // Set saturation = hunger / this (if > 0)
+
+        // Stack size limits based on food value
+        public int stackSizeLargeMeal = 4; // Foods with hunger >= 8 (e.g. Rabbit Stew)
+        public int stackSizeAverageMeal = 4; // Foods with hunger >= 6 (e.g. Mushroom Stew)
+        public int stackSizeLightMeal = 16; // Foods with hunger >= 4
+        public int stackSizeCookedMeal = 32; // Foods with hunger >= 2
+        public int stackSizeRawMeal = 32; // Foods with hunger < 2
     }
 
     public static class CropSettings {
@@ -47,7 +55,7 @@ public class HungerOverhaulConfig {
         public boolean removeTallGrassSeeds = true;
         public boolean disableCropGrowthModifications = false;
         public boolean autoDetectGrowthMods = true;
-        
+
         // Serene Seasons compatibility settings
         public boolean enableSereneSeasonsCompatibility = true;
         public boolean respectSeasonalGrowth = true;
@@ -67,6 +75,7 @@ public class HungerOverhaulConfig {
         public boolean modifyHoeUse = true;
         public boolean removeHoeRecipes = true;
         public double hoeToolDamageMultiplier = 5.0;
+
         public double seedChanceMultiplier = 1.0;
         public double seedChanceBase = 0.4;
     }

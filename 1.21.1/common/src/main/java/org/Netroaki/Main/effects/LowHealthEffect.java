@@ -2,20 +2,17 @@ package org.Netroaki.Main.effects;
 
 import org.Netroaki.Main.HOReborn;
 
-// 1.21.1-compatible LowHealthEffect using minimal API
-public class LowHealthEffect {
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+
+public class LowHealthEffect extends MobEffect {
 
     public LowHealthEffect() {
+        super(MobEffectCategory.HARMFUL, 0xFF0000); // Red
         HOReborn.LOGGER.info("LowHealthEffect initialized for 1.21.1");
     }
 
-    public String getDescriptionId() {
-        return "effect.hunger_overhaul_reborn.low_health";
-    }
-
     public boolean isAvailable() {
-        return true; // Available on 1.21.1
+        return true;
     }
-
-    // Minimal implementation - actual effect logic handled by reflection in handlers
 }

@@ -42,6 +42,14 @@ public final class HOReborn {
     public static RegistrySupplier<MobEffect> HUNGRY_EFFECT;
     public static RegistrySupplier<MobEffect> LOW_HEALTH_EFFECT;
 
+    // Module References (Parity)
+    public static FoodModule FOOD_MODULE;
+    public static HungerModule HUNGER_MODULE;
+    public static HealthModule HEALTH_MODULE;
+    public static CropModule CROP_MODULE;
+    public static AnimalModule ANIMAL_MODULE;
+    public static ToolModule TOOL_MODULE;
+
     static {
         // Create effect instances
         WELL_FED_EFFECT_INSTANCE = new WellFedEffect();
@@ -88,12 +96,25 @@ public final class HOReborn {
         VillageFieldHandler.init();
 
         // Initialize modules
-        new FoodModule().init();
-        new HungerModule().init();
-        new HealthModule().init();
-        new CropModule().init();
-        new AnimalModule().init();
-        new ToolModule().init();
+        // Initialize modules
+        // Store references for platform access (PARITY with 1.20.1)
+        FOOD_MODULE = new FoodModule();
+        FOOD_MODULE.init();
+        
+        HUNGER_MODULE = new HungerModule();
+        HUNGER_MODULE.init();
+
+        HEALTH_MODULE = new HealthModule();
+        HEALTH_MODULE.init();
+
+        CROP_MODULE = new CropModule();
+        CROP_MODULE.init();
+
+        ANIMAL_MODULE = new AnimalModule();
+        ANIMAL_MODULE.init();
+
+        TOOL_MODULE = new ToolModule();
+        TOOL_MODULE.init();
 
         // Initialize mod integrations
         new ModIntegrationHandler().init();

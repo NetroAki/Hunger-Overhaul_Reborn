@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.Entity;
+
 public class PlayerEventHandler {
     private static final int BASE_HUNGER_TICK_RATE = 24000;
     private static int hungerTickCounter = 0;
@@ -83,15 +86,16 @@ public class PlayerEventHandler {
                 desiredAmplifier = 0;
 
             if (HOReborn.HUNGRY_EFFECT != null) {
+                var hungryHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(HOReborn.HUNGRY_EFFECT.get());
                 if (desiredAmplifier >= 0) {
-                    MobEffectInstance current = player.getEffect(HOReborn.HUNGRY_EFFECT.get());
+                    MobEffectInstance current = player.getEffect(hungryHolder);
                     if (current == null || current.getAmplifier() != desiredAmplifier) {
-                        player.removeEffect(HOReborn.HUNGRY_EFFECT.get());
-                        player.addEffect(new MobEffectInstance(HOReborn.HUNGRY_EFFECT.get(), Integer.MAX_VALUE,
+                        player.removeEffect(hungryHolder);
+                        player.addEffect(new MobEffectInstance(hungryHolder, Integer.MAX_VALUE,
                                 desiredAmplifier, false, true, true));
                     }
                 } else {
-                    player.removeEffect(HOReborn.HUNGRY_EFFECT.get());
+                    player.removeEffect(hungryHolder);
                 }
             }
         }
@@ -139,22 +143,28 @@ public class PlayerEventHandler {
                                 config.health.addLowHealthWeakness ||
                                 config.health.addLowHealthMiningSlowdown ||
                                 config.health.addLowHealthNausea)) {
-                    player.addEffect(new MobEffectInstance(HOReborn.LOW_HEALTH_EFFECT.get(),
+                    var lowHealthHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(HOReborn.LOW_HEALTH_EFFECT.get());
+                    player.addEffect(new MobEffectInstance(lowHealthHolder,
                             Integer.MAX_VALUE, 0, false, true, true));
                 }
             } else {
                 // Remove effects when health recovers
                 if (HOReborn.LOW_HEALTH_EFFECT != null) {
-                    player.removeEffect(HOReborn.LOW_HEALTH_EFFECT.get());
+                    var lowHealthHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(HOReborn.LOW_HEALTH_EFFECT.get());
+                    player.removeEffect(lowHealthHolder);
                 }
-                player.removeEffect(MobEffects.CONFUSION);
+                player.removeEffect(MobEffects.CONFUSION); // Built-in effects use holder via standard access? Usually
+                                                           // MobEffects.CONFUSION is Holder in 1.21?
+                // Actually MobEffects fields ARE Holders in 1.21. So passing
+                // MobEffects.CONFUSION works directly.
+                // But my mod effects are RegistrySupplier or MobEffect instances.
             }
         }
 
         // One-second regeneration pulse when Well Fed is applied or upgraded
         if (HOReborn.WELL_FED_EFFECT != null) {
-            var wellFed = HOReborn.WELL_FED_EFFECT.get();
-            MobEffectInstance wf = player.getEffect(wellFed);
+            var wellFedHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(HOReborn.WELL_FED_EFFECT.get());
+            MobEffectInstance wf = player.getEffect(wellFedHolder);
             UUID id = player.getUUID();
             if (wf != null) {
                 int amp = wf.getAmplifier();
@@ -195,7 +205,7 @@ public class PlayerEventHandler {
         }
     }
 
-    private static void onPlayerRespawn(ServerPlayer player, boolean conqueredEnd) {
+    private static void onPlayerRespawn(ServerPlayer player, boolean conqueredEnd, Entity.RemovalReason reason) {
         HungerOverhaulConfig config = HungerOverhaulConfig.getInstance();
 
         if (config.hunger.modifyRespawnHunger) {
@@ -206,7 +216,7 @@ public class PlayerEventHandler {
 
     private static void onPlayerJoin(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            onPlayerRespawn(serverPlayer, false);
+            onPlayerRespawn(serverPlayer, false, Entity.RemovalReason.DISCARDED);
         }
     }
 

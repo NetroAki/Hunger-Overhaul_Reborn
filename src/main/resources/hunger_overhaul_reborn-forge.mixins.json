@@ -11,11 +11,13 @@
     "HoneyBottleItemMixin",
     "ItemsMixin",
     "MilkBucketItemMixin",
-    "SuspiciousStewItemMixin"
+    "SuspiciousStewItemMixin",
+    "AgeableMobMixin",
+    "AnimalMixin",
+    "ChickenMixin"
   ],
   "client": [],
   "injectors": {
     "defaultRequire": 1
   }
 }
-

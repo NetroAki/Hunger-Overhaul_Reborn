@@ -45,6 +45,13 @@ public class HungerOverhaulConfig {
         public double foodHungerDivider = 4.0; // Divide hunger by this
         public double foodSaturationDivider = 1.0; // Divide saturation by this
         public double foodHungerToSaturationDivider = 20.0; // Set saturation = hunger / this (if > 0)
+
+        // Stack size limits based on food value
+        public int stackSizeLargeMeal = 4; // Foods with hunger >= 8 (e.g. Rabbit Stew)
+        public int stackSizeAverageMeal = 4; // Foods with hunger >= 6 (e.g. Mushroom Stew)
+        public int stackSizeLightMeal = 16; // Foods with hunger >= 4
+        public int stackSizeCookedMeal = 32; // Foods with hunger >= 2
+        public int stackSizeRawMeal = 32; // Foods with hunger < 2
     }
 
     public static class CropSettings {
@@ -77,7 +84,8 @@ public class HungerOverhaulConfig {
         public double netherWartRegrowthMultiplier = 0.25;
         public double stemRegrowthMultiplier = 0.25;
 
-        // Flour recipe modifications (for Tinkers' Construct - includes legacy Natura functionality)
+        // Flour recipe modifications (for Tinkers' Construct - includes legacy Natura
+        // functionality)
         public boolean removeFlourCraftingRecipes = true;
         public boolean removeFlourSmeltingRecipe = true;
         public boolean addAlternateFlourCraftingRecipes = false;

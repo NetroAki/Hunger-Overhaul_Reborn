@@ -1,5 +1,6 @@
 package org.Netroaki.Main.applecore;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -28,16 +29,16 @@ public class FoodValues {
     }
 
     public static FoodValues getUnmodified(ItemStack itemStack) {
-        if (!itemStack.isEdible()) {
+        if (!itemStack.has(DataComponents.FOOD)) {
             return new FoodValues(0, 0f);
         }
 
-        var foodProperties = itemStack.getItem().getFoodProperties();
+        var foodProperties = itemStack.get(DataComponents.FOOD);
         if (foodProperties == null) {
             return new FoodValues(0, 0f);
         }
 
-        return new FoodValues(foodProperties.getNutrition(), foodProperties.getSaturationModifier());
+        return new FoodValues(foodProperties.nutrition(), foodProperties.saturation());
     }
 
     public static FoodValues get(ItemStack itemStack) {

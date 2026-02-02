@@ -13,8 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.Netroaki.Main.HOReborn;
-import org.Netroaki.Main.applecore.FoodEvent;
-import org.Netroaki.Main.applecore.FoodValues;
+import org.Netroaki.Main.api.FoodEvent;
+import org.Netroaki.Main.api.FoodValues;
 import org.Netroaki.Main.config.HungerOverhaulConfig;
 import org.Netroaki.Main.food.FoodRegistry;
 import org.Netroaki.Main.food.FoodValueLoader;
@@ -89,11 +89,13 @@ public class FoodEventHandler {
             }
         }
 
-        // Apply stack size modifications (still done directly since not part of AppleCore)
+        // Apply stack size modifications (still done directly since not part of
+        // AppleCore)
         if (HungerOverhaulConfig.getInstance().food.modifyStackSizes) {
             for (Item item : FoodUtil.getAllFoodItems()) {
                 FoodProperties food = item.getFoodProperties();
                 if (food != null) {
+
                     int newStackSize = getStackSizeForFoodValue(food.getNutrition());
                     FoodUtil.setMaxStackSize(item, newStackSize);
                 }
@@ -130,11 +132,11 @@ public class FoodEventHandler {
     private static FoodProperties createModifiedFoodProperties(Item item, FoodProperties original) {
         HungerOverhaulConfig config = HungerOverhaulConfig.getInstance();
         float saturation = original.getSaturationModifier();
-        
+
         // Get item name for categorization
         ResourceLocation itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item);
         String itemName = itemId != null ? itemId.getPath() : "unknown";
-        
+
         // Auto-categorize based on item name
         FoodCategorizer.FoodValue foodValue = FoodCategorizer.categorizeFood(itemName);
         int nutrition = foodValue.hunger;
@@ -185,51 +187,60 @@ public class FoodEventHandler {
     }
 
     private static int getWellFedDuration(int foodValue) {
-        // Thresholds match our meal tier system: 8 (LARGE_MEAL), 6 (AVERAGE_MEAL), 4 (LIGHT_MEAL), 2 (COOKED_FOOD)
+        // Thresholds match our meal tier system: 8 (LARGE_MEAL), 6 (AVERAGE_MEAL), 4
+        // (LIGHT_MEAL), 2 (COOKED_FOOD)
         if (foodValue >= 8)
-            return 480;  // LARGE_MEAL: 24 seconds
+            return 480; // LARGE_MEAL: 24 seconds
         if (foodValue >= 6)
-            return 240;  // AVERAGE_MEAL: 12 seconds
+            return 240; // AVERAGE_MEAL: 12 seconds
         if (foodValue >= 4)
-            return 120;  // LIGHT_MEAL: 6 seconds
+            return 120; // LIGHT_MEAL: 6 seconds
         if (foodValue >= 2)
-            return 40;   // COOKED_FOOD: 2 seconds
-        return 0;        // RAW_FOOD: no well-fed effect
+            return 40; // COOKED_FOOD: 2 seconds
+        return 0; // RAW_FOOD: no well-fed effect
     }
 
     public static int getEatingDuration(int foodValue) {
         // Dramatic scaling: the more complex/filling the meal, the longer it takes.
-        // Thresholds still match meal tiers (8, 6, 4, 2), but durations have larger gaps.
+        // Thresholds still match meal tiers (8, 6, 4, 2), but durations have larger
+        // gaps.
         if (foodValue >= 8)
-            return 64;  // LARGE_MEAL: 3.2 seconds (very slow, feast-tier)
+            return 64; // LARGE_MEAL: 3.2 seconds (very slow, feast-tier)
         if (foodValue >= 6)
-            return 48;  // AVERAGE_MEAL: 2.4 seconds
+            return 48; // AVERAGE_MEAL: 2.4 seconds
         if (foodValue >= 4)
-            return 32;  // LIGHT_MEAL: 1.6 seconds
+            return 32; // LIGHT_MEAL: 1.6 seconds
         if (foodValue >= 2)
-            return 20;  // COOKED_FOOD: 1.0 second
-        return 10;      // RAW_FOOD: 0.5 seconds (snack-tier, instant bite)
+            return 20; // COOKED_FOOD: 1.0 second
+        return 10; // RAW_FOOD: 0.5 seconds (snack-tier, instant bite)
     }
 
     private static int getStackSizeForFoodValue(int foodValue) {
-        // Thresholds match our meal tier system: higher value = lower stack size (more filling)
+        HungerOverhaulConfig.FoodSettings foodConfig = HungerOverhaulConfig.getInstance().food;
+
+        // Thresholds match our meal tier system: higher value = lower stack size (more
+        // filling)
         if (foodValue >= 8)
-            return 1;   // LARGE_MEAL: very filling, stack size 1
+            return foodConfig.stackSizeLargeMeal; // LARGE_MEAL
         if (foodValue >= 6)
-            return 4;   // AVERAGE_MEAL: filling, stack size 4
+            return foodConfig.stackSizeAverageMeal; // AVERAGE_MEAL
         if (foodValue >= 4)
-            return 16;  // LIGHT_MEAL: moderate, stack size 16
+            return foodConfig.stackSizeLightMeal; // LIGHT_MEAL
         if (foodValue >= 2)
-            return 32;  // COOKED_FOOD: less filling, stack size 32
-        return 32;      // RAW_FOOD: stack size 32 (same as cooked, not filling)
+            return foodConfig.stackSizeCookedMeal; // COOKED_FOOD
+        return foodConfig.stackSizeRawMeal; // RAW_FOOD
     }
 
     public static String getFoodDescription(int foodValue, float saturation) {
         // Determine category based on hunger value
-        if (foodValue >= 8) return "LARGE_MEAL";
-        if (foodValue >= 6) return "AVERAGE_MEAL";
-        if (foodValue >= 4) return "LIGHT_MEAL";
-        if (foodValue >= 2) return "COOKED_FOOD";
+        if (foodValue >= 8)
+            return "LARGE_MEAL";
+        if (foodValue >= 6)
+            return "AVERAGE_MEAL";
+        if (foodValue >= 4)
+            return "LIGHT_MEAL";
+        if (foodValue >= 2)
+            return "COOKED_FOOD";
         return "RAW_FOOD";
     }
 }

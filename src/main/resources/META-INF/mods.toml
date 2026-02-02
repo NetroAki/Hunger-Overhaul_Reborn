@@ -33,7 +33,7 @@ Key Features:
 '''
 #logoFile = ""
 
-# Mixin configuration for NeoForge
+# Mixin configuration for Forge
 [[mixins]]
 config = "hunger_overhaul_reborn-forge.mixins.json"
 
@@ -55,13 +55,6 @@ side = "BOTH"
 modId = "architectury"
 mandatory = true
 versionRange = "[9.2.14,)"
-ordering = "AFTER"
-side = "BOTH"
-
-[[dependencies.hunger_overhaul_reborn]]
-modId = "applecore"
-mandatory = false
-versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"
 

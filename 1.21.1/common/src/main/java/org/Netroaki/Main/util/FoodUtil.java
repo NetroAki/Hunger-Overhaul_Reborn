@@ -9,16 +9,16 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.core.component.DataComponents;
+
 public class FoodUtil {
 
     public static List<Item> getAllFoodItems() {
         List<Item> foodItems = new ArrayList<>();
 
         for (Item item : BuiltInRegistries.ITEM) {
-            // Check if item has food properties (works for both versions if mapped
-            // correctly)
-            // In 1.21.1, getFoodProperties() returns the default food component
-            if (item.getFoodProperties() != null) {
+            // Check if item has food properties via Data Components
+            if (item.components().has(DataComponents.FOOD)) {
                 foodItems.add(item);
             }
         }
@@ -54,12 +54,13 @@ public class FoodUtil {
     }
 
     public static String getFoodDescription(ItemStack stack) {
-        FoodProperties food = stack.getItem().getFoodProperties();
-        if (food == null)
+        // Use modified values to ensure tooltip matches actual effect
+        var values = org.Netroaki.Main.handlers.FoodEventHandler.getModifiedFoodValues(stack);
+        if (values == null)
             return "";
 
-        int nutrition = food.getNutrition();
-        float saturation = food.getSaturationModifier();
+        int nutrition = values.hunger;
+        float saturation = values.saturationModifier;
 
         return getFoodDescription(nutrition, saturation);
     }

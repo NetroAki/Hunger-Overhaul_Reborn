@@ -9,6 +9,9 @@ import org.Netroaki.Main.client.HudRenderer;
 import org.Netroaki.Main.config.HungerOverhaulConfig;
 import org.Netroaki.Main.util.FoodUtil;
 
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.Item;
+
 public class FoodModuleClient {
     public static void init() {
         if (HungerOverhaulConfig.getInstance().food.showFoodTooltips) {
@@ -17,24 +20,21 @@ public class FoodModuleClient {
         }
 
         if (HungerOverhaulConfig.getInstance().food.enableLowHungerWarnings) {
-            ClientGuiEvent.RENDER_HUD.register(HudRenderer::renderHudWarnings);
+            // Bridge DeltaTracker (1.21) to float partialTick (1.20 style shared renderer)
+            ClientGuiEvent.RENDER_HUD.register((graphics, tracker) -> HudRenderer.renderHudWarnings(graphics,
+                    tracker.getGameTimeDeltaPartialTick(true)));
             HOReborn.LOGGER.info("Effect warnings available");
         }
     }
 
     private static void onTooltip(ItemStack stack, java.util.List<Component> lines,
-            net.minecraft.world.item.TooltipFlag flag) {
+            Item.TooltipContext context, net.minecraft.world.item.TooltipFlag flag) {
         if (stack.isEmpty())
             return;
 
         // Basic check for food
-        if (!stack.isEdible()) {
-            // Some mods might have edible items that don't return true for isEdible()
-            // checks in some contexts?
-            // But usually isEdible() is safe.
-            // We can double check if it has food properties
-            if (stack.getItem().getFoodProperties() == null)
-                return;
+        if (!stack.has(DataComponents.FOOD)) {
+            return;
         }
 
         String description = FoodUtil.getFoodDescription(stack);
