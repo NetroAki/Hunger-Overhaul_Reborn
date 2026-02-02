@@ -13,7 +13,6 @@
     "MilkBucketItemMixin",
     "SuspiciousStewItemMixin",
     "AgeableMobMixin",
-    "AnimalMixin",
     "ChickenMixin"
   ],
   "client": [],

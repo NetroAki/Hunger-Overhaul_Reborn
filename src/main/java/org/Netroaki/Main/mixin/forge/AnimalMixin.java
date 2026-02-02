@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(Animal.class)
 public class AnimalMixin {
 
-    @ModifyConstant(method = "spawnChildFromBreeding", constant = @Constant(intValue = 6000))
+    @ModifyConstant(method = "breed", constant = @Constant(intValue = 6000))
     private int hor_modifyBreedingCooldown(int constant) {
         HungerOverhaulConfig config = HungerOverhaulConfig.getInstance();
         if (config != null) {
