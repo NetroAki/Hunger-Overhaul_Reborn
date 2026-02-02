@@ -16,6 +16,7 @@
     "SuspiciousStewItemMixin",
     "AgeableBlockMixin",
     "AgeableMobMixin",
+    "AnimalMixin",
     "ChickenMixin"
   ],
   "client": [],
